@@ -18,5 +18,13 @@ Run OpenADMS Server with `gunicorn`:
 $ gunicorn app:api --reload
 ```
 
+## Testing
+The API can be tested with [HTTPie](https://httpie.org/):
+```
+$ python3 -m pip install httpie
+$ rehash
+$ http :8000/auth/me -a user:password
+```
+
 ## Licence
 OpenADMS Server is licenced under BSD (2-Clause).
