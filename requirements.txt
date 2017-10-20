@@ -1,0 +1,3 @@
+falcon>=1.3.0
+falcon-auth>=1.1.0
+gunicorn>=19.7.1
