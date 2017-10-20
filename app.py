@@ -30,9 +30,9 @@ auth_middleware = FalconAuthMiddleware(basic_auth)
 # The REST API.
 api = falcon.API(middleware=[auth_middleware])
 api.add_route('/', RootResource())
-api.add_route('/auth', AuthResource())
-api.add_route('/auth/me', AuthMeResource())
-api.add_route('/auth/verify', AuthVerifyResource())
+api.add_route('/v1/auth', AuthResource())
+api.add_route('/v1/auth/me', AuthMeResource())
+api.add_route('/v1/auth/verify', AuthVerifyResource())
 
 
 if __name__ == '__main__':

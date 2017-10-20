@@ -1,7 +1,8 @@
 ![OpenADMS Server](https://www.dabamos.de/github/openadms.png)
 
 The **OpenADMS Server** is a REST service for the storage and processing of
-observation data obtained and transmitted by OpenADMS Node instances.
+observation data obtained and transmitted by
+[OpenADMS Node](https://github.com/dabamos/openadms-node/) instances.
 
 The API is based on [Falcon](https://falconframework.org/).
 

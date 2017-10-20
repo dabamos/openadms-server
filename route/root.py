@@ -26,6 +26,7 @@ class RootResource(object):
 
     def on_get(self, req: falcon.Request, resp: falcon.Response) -> None:
         root = {
+            'api': APP_API,
             'name': APP_NAME,
             'serverTime': datetime.utcnow().isoformat(),
             'uptime': self.get_uptime(),

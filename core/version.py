@@ -6,3 +6,4 @@ __license__ = 'BSD (2-Clause)'
 
 APP_NAME = 'OpenADMS Server'
 APP_VERSION = '0.1'
+APP_API = 'v1'
