@@ -3,6 +3,8 @@
 The **OpenADMS Server** is a REST service for the storage and processing of
 observation data obtained and transmitted by OpenADMS Node instances.
 
+The API is based on [https://falconframework.org/](Falcon).
+
 ## Installation
 Clone the repository and install the required dependencies with `pip`:
 ```
