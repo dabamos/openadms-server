@@ -28,4 +28,4 @@ $ http :8000/auth/me -a user:password
 ```
 
 ## Licence
-OpenADMS Server is licenced under BSD (2-Clause).
+OpenADMS Server is licenced under BSD-2-Clause.
