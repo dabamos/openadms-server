@@ -22,7 +22,7 @@ class AuthResource(object):
 
 class AuthMeResource(object):
     """
-    AuthMeResource returns information of the authenticated user.
+    AuthMeResource returns information regarding the authenticated user.
     """
 
     def on_get(self, req: falcon.Request, resp: falcon.Response) -> None:
@@ -38,4 +38,4 @@ class AuthVerifyResource(object):
     def on_get(self, req: falcon.Request, resp: falcon.Response) -> None:
         user = req.context.get('user')
         is_valid = True if user else False
-        resp.media = {'valid': is_valid}
+        resp.media = { 'valid': is_valid }
