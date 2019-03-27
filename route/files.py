@@ -8,7 +8,7 @@ from pathlib import Path
 import falcon
 
 
-class FileResource(object):
+class FilesResource(object):
 
     auth = {
         'auth_disabled': True

@@ -23,7 +23,7 @@ from falcon_auth import (FalconAuthMiddleware, BasicAuthBackend)
 import core.util
 from config import Config
 from route.auth import (AuthResource, AuthMeResource, AuthVerifyResource)
-from route.data import FileResource
+from route.files import FilesResource
 from route.nodes import NodesResource
 from route.projects import ProjectsResource
 from route.root import RootResource
@@ -56,8 +56,8 @@ api.add_route('/v1/projects/{pid}/nodes', NodesResource())
 api.add_route('/v1/projects/{pid}/nodes/{nid}', NodesResource())
 
 if Config.SERVE_CSV:
-    api.add_route('/v1/local/files', FileResource(Config.CSV_DIR, Config.CSV_EXT))
-    api.add_route('/v1/local/files/{file_name}', FileResource(Config.CSV_DIR, Config.CSV_EXT))
+    api.add_route('/v1/local/files', FilesResource(Config.CSV_DIR, Config.CSV_EXT))
+    api.add_route('/v1/local/files/{file_name}', FilesResource(Config.CSV_DIR, Config.CSV_EXT))
 
 if __name__ == '__main__':
     httpd = simple_server.make_server('127.0.0.1', 8000, api)
