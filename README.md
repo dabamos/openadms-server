@@ -12,7 +12,7 @@ Requests](http://docs.python-requests.org/en/master/)).
 
 ## Documentation
 The documentation is hosted on the
-[project website](https://www.dabamos.de/manual/openadms-node/).
+[project website](https://www.dabamos.de/manual/openadms-server/).
 
 ## Build the Documentation
 You can then generate the documentation with
