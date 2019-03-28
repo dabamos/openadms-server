@@ -27,7 +27,8 @@ from within your programming language (for instance, by using `jQuery
    Schematic illustration of OpenADMS Server
 
 More information is provided on the official `project website
-<https://www.dabamos.de/>`_.
+<https://www.dabamos.de/>`_. All scripts and configuration files are hosted on
+`GitHub <https://github.com/dabamos/openadms-server/>`_.
 
 Licence
 -------
@@ -36,7 +37,7 @@ This work is licenced under the `Creative Commons Attribution 3.0 Germany
 <https://creativecommons.org/licenses/by/3.0/de/>`_ (CC BY 3.0 DE).
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    introduction
