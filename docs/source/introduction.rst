@@ -19,7 +19,7 @@ service written in Python might require an ecosystem like:
     |            |   |            |   |            |   |            |   |            |   |            |   |            |
     +------------+   +------------+   +------------+   +------------+   +------------+   +------------+   +------------+
 
-However, the ``ngx_postgres`` module allows direct access to PostgreSQL from nginx:
+Whereas the nginx module ``ngx_postgres`` provides direct access to PostgreSQL:
 
 ::
 

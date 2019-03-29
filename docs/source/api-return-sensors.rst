@@ -1,15 +1,15 @@
-.. _api-return-targets:
+.. _api-return-sensors:
 
-Return Targets
+Return Sensors
 ==============
 
-The API call returns all targets of a given sensor.
+The API call returns all sensors of a given sensor node.
 
 URL
 ---
 ::
 
-    /api/v1/projects/<project id>/nodes/<node id>/sensors/<sensor name>/targets/
+    /api/v1/projects/<project id>/nodes/<node id>/sensors/
 
 Method
 ------
@@ -17,14 +17,14 @@ Method
 
 Request Fields
 --------------
-The server returns targets in JSON or CSV format. Select output format by
-setting the accept header.
+The server either returns sensor names in JSON or CSV format. Select output
+format by setting the accept header.
 
 ``Accept: application/json`` | ``Accept: text/csv``
 
 Success Response
 ----------------
-Requesting targets in JSON format:
+Requesting sensor names in JSON format:
 
 * **Request:** ``GET``
 * **Request Fields:** ``Accept: application/json``
@@ -34,9 +34,9 @@ Requesting targets in JSON format:
 
 ::
 
-    [ "P100", "P101", "P102" ]
+    [ "totalstation", "pt100", "weatherStation" ]
 
-Requesting targets in CSV format:
+Requesting sensor names in CSV format:
 
 * **Request:** ``GET``
 * **Request Fields:** ``Accept: text/csv``
@@ -45,14 +45,13 @@ Requesting targets in CSV format:
 * **Content:**
 
 ::
-
-    P100
-    P101
-    P102
+    totalstation
+    pt100
+    weatherStation
 
 Error Response
 --------------
-No targets in database:
+No sensors in database:
 
 * **Request:** ``GET``
 * **Request Fields:** ``Accept: application/json``
@@ -67,4 +66,4 @@ cURL
 ::
 
     $ curl -X GET -u openadms-server:password -H "Accept: application/json" \
-      -G "http://localhost/api/v1/projects/0a5a2c9caa45405b9967584154ba1341/nodes/00ce160e5cbb49b9bc2ee6f243f87841/sensors/totalstation/targets/"
+      -G "http://localhost/api/v1/projects/0a5a2c9caa45405b9967584154ba1341/nodes/00ce160e5cbb49b9bc2ee6f243f87841/sensors/"

@@ -1,15 +1,15 @@
-.. _api-return-targets:
+.. _api-return-projects:
 
-Return Targets
-==============
+Return Sensor Nodes
+===================
 
-The API call returns all targets of a given sensor.
+The API call returns all project ids.
 
 URL
 ---
 ::
 
-    /api/v1/projects/<project id>/nodes/<node id>/sensors/<sensor name>/targets/
+    /api/v1/projects/
 
 Method
 ------
@@ -17,14 +17,14 @@ Method
 
 Request Fields
 --------------
-The server returns targets in JSON or CSV format. Select output format by
-setting the accept header.
+The server either returns project ids in JSON or CSV format. Select output
+format by setting the accept header.
 
 ``Accept: application/json`` | ``Accept: text/csv``
 
 Success Response
 ----------------
-Requesting targets in JSON format:
+Requesting project ids in JSON format:
 
 * **Request:** ``GET``
 * **Request Fields:** ``Accept: application/json``
@@ -34,9 +34,9 @@ Requesting targets in JSON format:
 
 ::
 
-    [ "P100", "P101", "P102" ]
+    [ "d9d3cc1b44c046edbc3ec53573f6a81d", "60b8ab8b2aa74404a3d8914a4c505515", "28b8752974f54e6cb635f42b4b2a3e91" ]
 
-Requesting targets in CSV format:
+Requesting project ids in CSV format:
 
 * **Request:** ``GET``
 * **Request Fields:** ``Accept: text/csv``
@@ -46,13 +46,13 @@ Requesting targets in CSV format:
 
 ::
 
-    P100
-    P101
-    P102
+    d9d3cc1b44c046edbc3ec53573f6a81d
+    60b8ab8b2aa74404a3d8914a4c505515
+    28b8752974f54e6cb635f42b4b2a3e91
 
 Error Response
 --------------
-No targets in database:
+No project ids in database:
 
 * **Request:** ``GET``
 * **Request Fields:** ``Accept: application/json``
@@ -66,5 +66,4 @@ cURL
 ^^^^
 ::
 
-    $ curl -X GET -u openadms-server:password -H "Accept: application/json" \
-      -G "http://localhost/api/v1/projects/0a5a2c9caa45405b9967584154ba1341/nodes/00ce160e5cbb49b9bc2ee6f243f87841/sensors/totalstation/targets/"
+    $ curl -X GET -u openadms-server:password -H "Accept: application/json" -G "http://localhost/api/v1/projects/"

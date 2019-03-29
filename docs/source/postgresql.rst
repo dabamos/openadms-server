@@ -28,7 +28,8 @@ Customise the PostgreSQL configuration file
 
     listen_addresses = 'localhost, <your ip>'
 
-Change the client authentication in ``/var/db/postgres/data10/pg_hba.conf``. Set the IP address for IPv4/IPv6 connections according to your set-up, for example:
+Change the client authentication in ``/var/db/postgres/data10/pg_hba.conf``. Set
+the IP address for IPv4/IPv6 connections according to your set-up, for example:
 
 ::
 
@@ -48,7 +49,8 @@ Start the PostgreSQL server:
 
     # service postgresql start
 
-Set a new password for user ``postgres``. After login, create a new database user ``openadms-server`` and a new database ``timeseries``:
+Set a new password for user ``postgres``. After login, create a new database
+user ``openadms-server`` and a new database ``timeseries``:
 
 .. code-block:: console
 
@@ -84,11 +86,12 @@ Use ``pg_dump`` to create database dumps:
 
 Automate backups with cron. Create a shell script ``pg_backup.sh`` with the
 above command and make it executable with
-``chmod g+x /usr/local/sbin/pg_backup.sh``. Add the cron job:
+``chmod g+x /usr/local/sbin/pg_backup.sh``. Add a new cron job that runs the
+backup script every week on Sunday at 23:00:
 
 .. code-block:: console
 
     # crontab -e
     0	23	*	*	0	sh /usr/local/sbin/pg_backup.sh
 
-You can list cron jobs with ``cronjob -l``.
+You can list active cron jobs with ``cronjob -l``.

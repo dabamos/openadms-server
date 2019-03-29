@@ -56,9 +56,11 @@ chosen HTTP accept header (``Accept: application/json`` or ``Accept: text/csv``)
 
     [
       {
+        "type": "observation"
         "id": "00ce160e5cbb49b9bc2ee6f243f87841",
         "nid": "2d1be5b0bd8d42eda483d44232d8ce5d",
         "pid": "0a5a2c9caa45405b9967584154ba1341",
+        "sensorName": "incl",
         "name": "getSensorData",
         "type": "observation",
         "target": "P100",
