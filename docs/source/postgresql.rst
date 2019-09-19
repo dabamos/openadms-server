@@ -6,7 +6,7 @@ Install PostgreSQL 9.3 or higher. On FreeBSD, run:
 
 .. code-block:: console
 
-    # pkg databases/postgresql11-server
+    # pkg databases/postgresql11-server www/lua-resty-core
 
 Add the service to ``/etc/rc.conf``:
 
@@ -20,6 +20,8 @@ Create a new PostgreSQL database cluster:
 
     # service postgresql initdb
 
+Configuration
+-------------
 Customise the PostgreSQL configuration file
 ``/var/db/postgres/data11/postgresql.conf``. Add the IP address of the host to
 ``listen_address``:
@@ -75,16 +77,33 @@ selected databases only. Open a connection to the database ``timeseries`` with
 
     $ psql -h localhost -U openadms-server -d timeseries
     timeseries=> \l
-    timeseries=> \d timeseries
     timeseries=> \q
 
-Create a new SQL table by executing ``timeseries.sql`` from this repository with ``psql``:
+Create the SQL tables by executing ``timeseries.sql`` from the OpenADMS Server
+repository with ``psql``:
 
 .. code-block:: console
 
     $ psql -h localhost -U openadms-server -d timeseries -a -f timeseries.sql
 
-The PostgreSQL database is now ready to store time series data. Use nginx as a front-end.
+The tables ``observations`` and ``heartbeats`` are now in database
+``timeseries``.
+
+.. code-block:: console
+
+    $ psql -h localhost -U openadms-server -d timeseries
+    timeseries=> \l
+    timeseries=> \dt+ openadms.*
+                                  List of relations
+      Schema  |     Name     | Type  |      Owner      |    Size    | Description 
+    ----------+--------------+-------+-----------------+------------+-------------
+     openadms | heartbeats   | table | openadms-server | 0 bytes    | 
+     openadms | observations | table | openadms-server | 8192 bytes | 
+    (2 rows)
+    timeseries=> \q
+
+The PostgreSQL database is now ready to store time series data. Use nginx as a
+front-end.
 
 Automated Backups
 -----------------
