@@ -11,8 +11,8 @@ SET CLIENT_ENCODING = 'UTF8';
 
 CREATE SCHEMA openadms;
 
--- Create the timeseries table.
-CREATE TABLE openadms.timeseries (
+-- Create the obversations table.
+CREATE TABLE openadms.obversations (
     id   BIGSERIAL PRIMARY KEY,
     data JSONB     NOT NULL
 );
@@ -27,14 +27,14 @@ CREATE TABLE openadms.heartbeats (
 );
 
 -- Create indices.
-CREATE INDEX idx_nid       ON openadms.timeseries ((data->>'nid'));
-CREATE INDEX idx_pid       ON openadms.timeseries ((data->>'pid'));
-CREATE INDEX idx_sensor    ON openadms.timeseries ((data->>'sensorName'));
-CREATE INDEX idx_target    ON openadms.timeseries ((data->>'target'));
-CREATE INDEX idx_timestamp ON openadms.timeseries ((data->>'timestamp'));
-CREATE INDEX idx_type      ON openadms.timeseries ((data->>'type'));
+CREATE INDEX idx_nid       ON openadms.obversations ((data->>'nid'));
+CREATE INDEX idx_pid       ON openadms.obversations ((data->>'pid'));
+CREATE INDEX idx_sensor    ON openadms.obversations ((data->>'sensorName'));
+CREATE INDEX idx_target    ON openadms.obversations ((data->>'target'));
+CREATE INDEX idx_timestamp ON openadms.obversations ((data->>'timestamp'));
+CREATE INDEX idx_type      ON openadms.obversations ((data->>'type'));
 
 COMMIT;
 
-ANALYZE openadms.timeseries;
+ANALYZE openadms.obversations;
 ANALYZE openadms.heartbeats;
