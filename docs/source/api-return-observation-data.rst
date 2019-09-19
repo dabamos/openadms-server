@@ -28,7 +28,7 @@ Request Fields
 URL Params
 ----------
 The start and end timestamp can be provided as URL parameters (defaults are
-``1900` and `2300``).
+``1900`` and ``2300``).
 
 Optional
 ^^^^^^^^
@@ -95,7 +95,7 @@ No observations:
 * **Request Fields:** ``Accept: application/json``
 * **Code:** 410 Gone
 * **Response Fields:** ``Content-Type: application/json``
-* **Content:** ``{ error: "No rows." }``
+* **Content:** ``{ code 410, error: "No rows." }``
 
 Sample Call
 -----------

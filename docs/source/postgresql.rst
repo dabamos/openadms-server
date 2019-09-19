@@ -6,13 +6,13 @@ Install PostgreSQL 9.3 or higher. On FreeBSD, run:
 
 .. code-block:: console
 
-    # pkg databases/postgresql10-server
+    # pkg databases/postgresql11-server
 
 Add the service to ``/etc/rc.conf``:
 
 .. code-block:: console
 
-    # sysrc postgresql_enable=yes
+    # sysrc postgresql_enable="YES"
 
 Create a new PostgreSQL database cluster:
 
@@ -21,14 +21,20 @@ Create a new PostgreSQL database cluster:
     # service postgresql initdb
 
 Customise the PostgreSQL configuration file
-``/var/db/postgres/data10/postgresql.conf``. Add the IP address of the host to
+``/var/db/postgres/data11/postgresql.conf``. Add the IP address of the host to
 ``listen_address``:
 
 .. code-block:: console
 
     listen_addresses = 'localhost, <your ip>'
 
-Change the client authentication in ``/var/db/postgres/data10/pg_hba.conf``. Set
+Also, set the password encryption to ``scram-sha-256``:
+
+.. code-block:: console
+
+    password_encryption = scram-sha-256
+
+Change the client authentication in ``/var/db/postgres/data11/pg_hba.conf``. Set
 the IP address for IPv4/IPv6 connections according to your set-up, for example:
 
 ::
@@ -41,7 +47,7 @@ the IP address for IPv4/IPv6 connections according to your set-up, for example:
     host    all             all             127.0.0.1/32            scram-sha-256
     host    all             all             <your ip>/32            scram-sha-256
     # IPv6 local connections:
-    host    all             all             .. code-block:: console1/128                 scram-sha-256
+    host    all             all             ::1/128                 scram-sha-256
 
 Start the PostgreSQL server:
 
@@ -50,16 +56,20 @@ Start the PostgreSQL server:
     # service postgresql start
 
 Set a new password for user ``postgres``. After login, create a new database
-user ``openadms-server`` and a new database ``timeseries``:
+user (e.g., ``openadms-server``) and a new database (e.g., ``timeseries``):
 
 .. code-block:: console
 
     # passwd postgres
     # su - postgres
-    $ createuser --no-superuser --createdb --no-createrole openadms-server
+    $ createuser --no-superuser --createdb --no-createrole --pwprompt openadms-server
+    Enter password for new role:
+    Enter it again:
     $ createdb --encoding UTF8 --owner openadms-server timeseries
 
-You can connect to the database with ``psql``:
+You may want to create additional users who have read/write privileges to
+selected databases only. Open a connection to the database ``timeseries`` with
+``psql``:
 
 .. code-block:: console
 

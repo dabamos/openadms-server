@@ -1,7 +1,7 @@
 .. _api-return-projects:
 
-Return Sensor Nodes
-===================
+Return Projects
+===============
 
 The API call returns all project ids.
 
@@ -58,7 +58,7 @@ No project ids in database:
 * **Request Fields:** ``Accept: application/json``
 * **Code:** 410 Gone
 * **Response Fields:** ``Content-Type: application/json``
-* **Content:** ``{ error: "No rows." }``
+* **Content:** ``{ code: 410, error: "No rows." }``
 
 Sample Call
 -----------

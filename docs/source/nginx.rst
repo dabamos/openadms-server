@@ -4,7 +4,9 @@ nginx
 The HTTP front-end runs on `nginx`_. Either install nginx or `OpenResty`_ with
 the following additional modules:
 
+* `form-input`_,
 * `headers-more`_,
+* `http-realip`_,
 * `lua`_,
 * `postgres`_,
 * `set-misc`_.
@@ -56,7 +58,9 @@ generate ``htpasswd`` files.
 
 .. _nginx: https://nginx.org/
 .. _OpenResty: https://openresty.org/
+.. _form-input: https://github.com/calio/form-input-nginx-module
 .. _headers-more: https://github.com/openresty/headers-more-nginx-module
+.. _http-realip: http://nginx.org/en/docs/http/ngx_http_realip_module.html
 .. _lua: https://github.com/openresty/lua-nginx-module
 .. _postgres: https://github.com/FRiCKLE/ngx_postgres
 .. _set-misc: https://github.com/openresty/set-misc-nginx-module
