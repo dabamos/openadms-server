@@ -20,11 +20,11 @@ On FreeBSD, the full package can be installed with:
 If you use a custom nginx package or build from source, make sure that all
 required modules are included.
 
-Copy the file ``nginx.conf`` from the GitHub repository to
-``/usr/local/etc/nginx/`` (FreeBSD) or ``/etc/nginx/`` (Linux) and alter the
-configuration to your set-up.  You have to update at least the name of the user
-the nginx process is running under, the connection details of your PostgreSQL
-database, and the actual server name:
+Copy the file ``nginx.conf`` and directory ``openadms-server`` from the GitHub
+repository to ``/usr/local/etc/nginx/`` (FreeBSD) or ``/etc/nginx/`` (Linux) and
+alter the configuration to your set-up. You have to update at least the name of
+the user the nginx process is running under, the connection details of your
+PostgreSQL database, and the actual server name:
 
 ::
 
@@ -38,7 +38,7 @@ database, and the actual server name:
        # user:     PostgreSQL user name.
        # password: PostgreSQL password.
        upstream postgresql {
-           postgres_server     localhost dbname=observations user=openadms-server password=secret;
+           postgres_server     localhost dbname=timeseries user=openadms-server password=secret;
            postgres_keepalive  max=200 overflow=reject;
        }
 
