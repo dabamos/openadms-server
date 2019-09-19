@@ -53,7 +53,7 @@ Wrong or missing credentials:
 * **Request:** ``GET``
 * **Request Fields:** ``Content-Type: application/json``
 * **Code:** 401
-* **Content:** ``{ code: 401, error: "Unauthorized." }``
+* **Content:** ``{ "code": 401, "error": "Unauthorized." }``
 
 Sample Call
 -----------

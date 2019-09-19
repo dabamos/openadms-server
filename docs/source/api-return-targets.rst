@@ -58,7 +58,7 @@ No targets in database:
 * **Request Fields:** ``Accept: application/json``
 * **Code:** 410 Gone
 * **Response Fields:** ``Content-Type: application/json``
-* **Content:** ``{ code: 410, error: "No rows." }``
+* **Content:** ``{ "code": 410, "error": "No rows." }``
 
 Sample Call
 -----------

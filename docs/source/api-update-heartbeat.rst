@@ -45,7 +45,7 @@ Wrong request type:
   * **Request Fields:** ``Content-Type: application/x-www-form-urlencoded``
   * **Code:** 405 Method not allowed
   * **Response Fields:** ``Content-Type: application/json``
-  * **Content:** ``{ code: 405, error: "Method not allowed." }``
+  * **Content:** ``{ "code": 405, "error": "Method not allowed." }``
 
 Sample Call
 -----------
