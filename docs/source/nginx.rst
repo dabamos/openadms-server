@@ -15,7 +15,7 @@ On FreeBSD, the full package can be installed with:
 
 .. code-block:: console
 
-   # pkg install www/nginx-full
+   # pkg install www/nginx-full www/lua-resty-core
 
 If you use a custom nginx package or build from source, make sure that all
 required modules are included.

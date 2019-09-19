@@ -6,7 +6,7 @@ Install PostgreSQL 9.3 or higher. On FreeBSD, run:
 
 .. code-block:: console
 
-    # pkg databases/postgresql11-server www/lua-resty-core
+    # pkg databases/postgresql11-server
 
 Add the service to ``/etc/rc.conf``:
 
