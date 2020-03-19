@@ -1,9 +1,9 @@
 .. _api-return-observation-ids:
 
-Return Observations
-===================
+Return Observation IDs
+======================
 
-The API call returns all observations ids by given project id, sensor node id,
+The API call returns all observation ids of a given project id, sensor node id,
 sensor name, and target name. The result is either a JSON array or plain text
 lines in CSV format, depending on the chosen HTTP accept header.
 
@@ -11,7 +11,7 @@ URL
 ---
 ::
 
-    /api/v1/projects/<project id>/nodes/<node id>/sensors/<sensor name>/targets/<target name>/
+    /api/v1/projects/<project id>/nodes/<node id>/sensors/<sensor name>/targets/<target name>/ids/
 
 Method
 ------
@@ -68,4 +68,4 @@ cURL
 ::
 
     $ curl -X GET -u user:password -H "Accept: application/json" \
-      -G "http://localhost/api/v1/projects/0a5a2c9caa45405b9967584154ba1341/nodes/00ce160e5cbb49b9bc2ee6f243f87841/sensors/TM30/targets/P100/"
+      -G "http://localhost/api/v1/projects/0a5a2c9caa45405b9967584154ba1341/nodes/00ce160e5cbb49b9bc2ee6f243f87841/sensors/TM30/targets/P100/ids/"
