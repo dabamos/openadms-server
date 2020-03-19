@@ -53,7 +53,7 @@ Wrong or missing credentials:
 * **Request:** ``GET``
 * **Request Fields:** ``Content-Type: application/json``
 * **Code:** 401
-* **Content:** ``{ "code": 401, "error": "Unauthorized." }``
+* **Content:** ``{ "code": 401, "message": "Unauthorized." }``
 
 Sample Call
 -----------
@@ -63,5 +63,5 @@ Requesting the last heartbeat of a given project id and node id:
 
 ::
 
-    $ curl -X GET -u openadms-server:password -H "Accept: application/json" \
+    $ curl -X GET -u user:password -H "Accept: application/json" \
       http://localhost/api/v1/projects/pid/nodes/nid/heartbeat/

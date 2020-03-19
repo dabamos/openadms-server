@@ -86,7 +86,7 @@ repository with ``psql``:
 
     $ psql -h localhost -U openadms-server -d timeseries -a -f timeseries.sql
 
-The tables ``observations`` and ``heartbeats`` are now in database
+The tables ``observations`` and ``heartbeats`` should be in database
 ``timeseries``.
 
 .. code-block:: console

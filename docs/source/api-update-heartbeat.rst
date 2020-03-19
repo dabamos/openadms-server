@@ -45,7 +45,7 @@ Wrong request type:
   * **Request Fields:** ``Content-Type: application/x-www-form-urlencoded``
   * **Code:** 405 Method not allowed
   * **Response Fields:** ``Content-Type: application/json``
-  * **Content:** ``{ "code": 405, "error": "Method not allowed." }``
+  * **Content:** ``{ "code": 405, "message": "Method not allowed." }``
 
 Sample Call
 -----------
@@ -55,5 +55,5 @@ Sending a heartbeat:
 
 ::
 
-    $ curl -X PUT -u openadms-server:password -H "Content-Type: application/x-www-form-urlencoded" \
+    $ curl -X PUT -u user:password -H "Content-Type: application/x-www-form-urlencoded" \
       -d "pid=<project id>&nid=<node id>" http://localhost/api/v1/heartbeat/

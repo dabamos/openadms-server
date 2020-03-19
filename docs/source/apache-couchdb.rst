@@ -1,6 +1,9 @@
 Apache CouchDB
 ==============
 
+.. warning:: This section is outdated. It is recommended to use PostgreSQL and
+             nginx instead to provide a REST API for timeseries data.
+
 It is also possible to create an HTTP service based on Apache CouchDB.  On
 FreeBSD, simply install the package:
 

@@ -58,7 +58,7 @@ No project ids in database:
 * **Request Fields:** ``Accept: application/json``
 * **Code:** 410 Gone
 * **Response Fields:** ``Content-Type: application/json``
-* **Content:** ``{ "code": 410, "error": "No rows." }``
+* **Content:** ``{ "code": 410, "message": "No rows." }``
 
 Sample Call
 -----------
@@ -66,4 +66,4 @@ cURL
 ^^^^
 ::
 
-    $ curl -X GET -u openadms-server:password -H "Accept: application/json" -G "http://localhost/api/v1/projects/"
+    $ curl -X GET -u user:password -H "Accept: application/json" -G "http://localhost/api/v1/projects/"

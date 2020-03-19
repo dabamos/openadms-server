@@ -45,6 +45,7 @@ Requesting sensor names in CSV format:
 * **Content:**
 
 ::
+
     totalstation
     pt100
     weatherStation
@@ -57,7 +58,7 @@ No sensors in database:
 * **Request Fields:** ``Accept: application/json``
 * **Code:** 410 Gone
 * **Response Fields:** ``Content-Type: application/json``
-* **Content:** ``{ "code": 410, "error": "No rows." }``
+* **Content:** ``{ "code": 410, "message": "No rows." }``
 
 Sample Call
 -----------
@@ -65,5 +66,5 @@ cURL
 ^^^^
 ::
 
-    $ curl -X GET -u openadms-server:password -H "Accept: application/json" \
+    $ curl -X GET -u user:password -H "Accept: application/json" \
       -G "http://localhost/api/v1/projects/0a5a2c9caa45405b9967584154ba1341/nodes/00ce160e5cbb49b9bc2ee6f243f87841/sensors/"

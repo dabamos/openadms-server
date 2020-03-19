@@ -16,7 +16,9 @@ Observation Data Retrieval
 * :doc:`Return sensor nodes <api-return-sensor-nodes>`
 * :doc:`Return sensor names <api-return-sensors>`
 * :doc:`Return target names <api-return-targets>`
-* :doc:`Return observation data <api-return-observation-data>`
+* :doc:`Return observation <api-return-observation>`
+* :doc:`Return observation IDs <api-return-observation-ids>`
+* :doc:`Return observations by range <api-return-observations>`
 
 Heartbeats
 ^^^^^^^^^^
