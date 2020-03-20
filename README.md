@@ -20,7 +20,7 @@ The documentation is hosted on the
 | `/api/v1/`                                                                           | `GET`  | Returns system info.     |
 | `/api/v1/heartbeats/`                                                                | `POST` | Stores heartbeat.        |
 | `/api/v1/observations/`                                                              | `POST` | Stores observation.      |
-| `/api/v1/observations/<id>/                                                          | `GET`  | Returns observation.     |
+| `/api/v1/observations/<id>/`                                                         | `GET`  | Returns observation.     |
 | `/api/v1/projects/`                                                                  | `GET`  | Returns project ids.     |
 | `/api/v1/projects/<pid>/nodes/`                                                      | `GET`  | Returns sensor node ids. |
 | `/api/v1/projects/<pid>/nodes/<nid>/heartbeat/`                                      | `GET`  | Returns last heartbeat.  |
