@@ -1,6 +1,6 @@
-.. _api-store-observation-data:
-Store Observation Data
-======================
+.. _api-send-observation-data:
+Send Observation Data
+=====================
 
 Stores a JSON-formatted observation data object in the database. Multiple
 observations can be sent as a JSON array. Maximum size of the request body is

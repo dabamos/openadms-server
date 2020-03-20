@@ -78,7 +78,7 @@ No observations:
 * **Request Fields:** ``Accept: application/json``
 * **Code:** 410 Gone
 * **Response Fields:** ``Content-Type: application/json``
-* **Content:** ``{ "code": 410, "message": "No rows." }``
+* **Content:** ``{ "code": 410, "message": "Gone." }``
 
 Sample Call
 -----------

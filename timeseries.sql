@@ -1,7 +1,7 @@
 --
 -- PostgreSQL database table for observation data and sensor node pings.
 --
--- Date:    2019-09-19
+-- Date:    2020-03-20
 -- Author:  Philipp Engel
 --
 
@@ -19,14 +19,16 @@ CREATE TABLE openadms.observations (
 
 -- Create the heartbeats table for sensor node pings.
 CREATE TABLE openadms.heartbeats (
-    pid VARCHAR(80) NOT NULL,
-    nid VARCHAR(80) NOT NULL,
-    ip  VARCHAR(15),
-    dt  TIMESTAMPTZ,
+    pid  VARCHAR(80) NOT NULL,
+    nid  VARCHAR(80) NOT NULL,
+    freq BIGINT,
+    ip   VARCHAR(15),
+    dt   TIMESTAMPTZ,
     UNIQUE (pid, nid)
 );
 
 -- Create indices.
+CREATE INDEX idx_id        ON openadms.observations ((data->>'id'));
 CREATE INDEX idx_nid       ON openadms.observations ((data->>'nid'));
 CREATE INDEX idx_pid       ON openadms.observations ((data->>'pid'));
 CREATE INDEX idx_sensor    ON openadms.observations ((data->>'sensorName'));

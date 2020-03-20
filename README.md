@@ -14,6 +14,21 @@ Requests](http://docs.python-requests.org/en/master/)).
 The documentation is hosted on the
 [project website](https://www.dabamos.de/manual/openadms-server/).
 
+## API
+| Endpoint                                                                             | Method | Description              |
+|--------------------------------------------------------------------------------------|--------|--------------------------|
+| `/api/v1/`                                                                           | `GET`  | Returns system info.     |
+| `/api/v1/heartbeats/`                                                                | `POST` | Stores heartbeat.        |
+| `/api/v1/observations/`                                                              | `POST` | Stores observation.      |
+| `/api/v1/observations/<id>/                                                          | `GET`  | Returns observation.     |
+| `/api/v1/projects/`                                                                  | `GET`  | Returns project ids.     |
+| `/api/v1/projects/<pid>/nodes/`                                                      | `GET`  | Returns sensor node ids. |
+| `/api/v1/projects/<pid>/nodes/<nid>/heartbeat/`                                      | `GET`  | Returns last heartbeat.  |
+| `/api/v1/projects/<pid>/nodes/<nid>/sensors/`                                        | `GET`  | Returns sensor names.    |
+| `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/`                       | `GET`  | Returns target names.    |
+| `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/<target>/ids/`          | `GET`  | Returns observation ids. |
+| `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/<target>/observations/` | `GET`  | Returns observations.    |
+
 ## Build the Documentation
 You can then generate the documentation with
 [Sphinx](http://www.sphinx-doc.org/). Install Sphinx with:

@@ -38,7 +38,7 @@ PostgreSQL database, and the actual server name:
        # user:     PostgreSQL user name.
        # password: PostgreSQL password.
        upstream postgresql {
-           postgres_server     localhost dbname=timeseries user=openadms-server password=secret;
+           postgres_server     localhost dbname=timeseries user=<username> password=<password>;
            postgres_keepalive  max=200 overflow=reject;
        }
 

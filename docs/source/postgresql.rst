@@ -64,10 +64,10 @@ user (e.g., ``openadms-server``) and a new database (e.g., ``timeseries``):
 
     # passwd postgres
     # su - postgres
-    $ createuser --no-superuser --createdb --no-createrole --pwprompt openadms-server
+    $ createuser --no-superuser --createdb --no-createrole --pwprompt <username>
     Enter password for new role:
     Enter it again:
-    $ createdb --encoding UTF8 --owner openadms-server timeseries
+    $ createdb --encoding UTF8 --owner <username> timeseries
 
 You may want to create additional users who have read/write privileges to
 selected databases only. Open a connection to the database ``timeseries`` with
@@ -75,7 +75,7 @@ selected databases only. Open a connection to the database ``timeseries`` with
 
 .. code-block:: console
 
-    $ psql -h localhost -U openadms-server -d timeseries
+    $ psql -h localhost -U <username> -d timeseries
     timeseries=> \l
     timeseries=> \q
 
@@ -84,21 +84,21 @@ repository with ``psql``:
 
 .. code-block:: console
 
-    $ psql -h localhost -U openadms-server -d timeseries -a -f timeseries.sql
+    $ psql -h localhost -U <username> -d timeseries -a -f timeseries.sql
 
 The tables ``observations`` and ``heartbeats`` should be in database
 ``timeseries``.
 
 .. code-block:: console
 
-    $ psql -h localhost -U openadms-server -d timeseries
+    $ psql -h localhost -U <username> -server -d timeseries
     timeseries=> \l
     timeseries=> \dt+ openadms.*
                                   List of relations
-      Schema  |     Name     | Type  |      Owner      |    Size    | Description 
+      Schema  |     Name     | Type  |      Owner      |    Size    | Description
     ----------+--------------+-------+-----------------+------------+-------------
-     openadms | heartbeats   | table | openadms-server | 0 bytes    | 
-     openadms | observations | table | openadms-server | 8192 bytes | 
+     openadms | heartbeats   | table | <username>      | 0 bytes    |
+     openadms | observations | table | <username>      | 8192 bytes |
     (2 rows)
     timeseries=> \q
 
@@ -111,7 +111,7 @@ Use ``pg_dump`` to create database dumps:
 
 .. code-block:: console
 
-    # pg_dump timeseries --username=openadms-server | gzip > /var/backups/`date +"%Y%m%d%H%M%S"`_timeseries.sql.gz
+    # pg_dump timeseries --username=<username> | gzip > /var/backups/`date +"%Y%m%d%H%M%S"`_timeseries.sql.gz
 
 Automate backups with cron. Create a shell script ``pg_backup.sh`` with the
 above command and make it executable with

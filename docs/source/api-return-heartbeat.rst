@@ -2,8 +2,8 @@
 Return Heartbeat
 ================
 
-Returns the last heartbeat of a sensor node, containing project id, node id, IP
-address, and timestamp.
+Returns the last heartbeat of a sensor node, containing project id, node id,
+heartbeat frequency in seconds, IP address, and timestamp of last heartbeat.
 
 URL
 ---
@@ -34,6 +34,7 @@ In JSON format:
     {
       "pid": "e1a36b67e32f4f0ea1f40e6f1898b28e",
       "nid": "de5cc10f4a9a4bda9b390ccd8c5a3aa4",
+      "freq": 300,
       "ip": "10.0.0.9",
       "dt": "2019-04-04T20:15:09.847721+02:00"
     }
@@ -44,7 +45,7 @@ In CSV format:
 * **Request Fields:** ``Accept: text/csv``
 * **Code:** 200 OK
 * **Response Fields:** ``Content-Type: text/csv``
-* **Content:** ``e1a36b67e32f4f0ea1f40e6f1898b28e,de5cc10f4a9a4bda9b390ccd8c5a3aa4,10.0.0.9,2019-04-04T20:15:09.847721+02:00``
+* **Content:** ``e1a36b67e32f4f0ea1f40e6f1898b28e,de5cc10f4a9a4bda9b390ccd8c5a3aa4,300,10.0.0.9,2019-04-04T20:15:09.847721+02:00``
 
 Error Response
 --------------
@@ -59,9 +60,17 @@ Sample Call
 -----------
 cURL
 ^^^^
-Requesting the last heartbeat of a given project id and node id:
+Requesting the last heartbeat of a given project id and node id in JSON format:
 
 ::
 
     $ curl -X GET -u user:password -H "Accept: application/json" \
-      http://localhost/api/v1/projects/pid/nodes/nid/heartbeat/
+      http://localhost/api/v1/projects/e1a36b67e32f4f0ea1f40e6f1898b28e/nodes/de5cc10f4a9a4bda9b390ccd8c5a3aa4/heartbeat/
+
+Requesting the last heartbeat of a given project id and node id in CSV format:
+
+::
+
+    $ curl -X GET -u user:password -H "Accept: text/csv" \
+      http://localhost/api/v1/projects/e1a36b67e32f4f0ea1f40e6f1898b28e/nodes/de5cc10f4a9a4bda9b390ccd8c5a3aa4/heartbeat/
+
