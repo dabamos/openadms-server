@@ -10,6 +10,18 @@ within your programming language (for instance, by using
 [jQuery](https://jquery.com/) or [Python
 Requests](http://docs.python-requests.org/en/master/)).
 
+The OpenADMS Server API is based on
+[nginx](https://nginx.org/en/)/[OpenResty](https://openresty.org/en/) and
+[PostgreSQL](https://www.postgresql.org/). The following nginx modules are
+required:
+
+* [form-input](https://github.com/calio/form-input-nginx-module)
+* [headers-more](https://github.com/openresty/headers-more-nginx-module)
+* [http-realip](http://nginx.org/en/docs/http/ngx_http_realip_module.html)
+* [lua](https://github.com/openresty/lua-nginx-module)
+* [postgres](https://github.com/FRiCKLE/ngx_postgres)
+* [set-misc](https://github.com/openresty/set-misc-nginx-module)
+
 ## Documentation
 The documentation is hosted on the
 [project website](https://www.dabamos.de/manual/openadms-server/).
