@@ -3,15 +3,15 @@
 **OpenADMS Server** is a set of scripts and configuration files to run an HTTP
 service for time series data, obtained from IoT sensor networks based on
 [OpenADMS Node](https://github.com/dabamos/openadms-node/) or 3rd party
-applications. A REST interface API is provided for sensor data storage and
-retrieval. Access the API from your web browser, with command-line tools like
-[cURL](https://curl.haxx.se/) or [HTTPie](https://httpie.org/), or directly from
-within your programming language (for instance, by using
-[jQuery](https://jquery.com/) or [Python
-Requests](http://docs.python-requests.org/en/master/)).
+applications. A REST interface API is provided for storage and retrieval of
+sensor data, log messages, and heartbeats. Access the API from your web browser,
+with command-line tools like [cURL](https://curl.haxx.se/) or
+[HTTPie](https://httpie.org/), or directly from within your programming language
+(for instance, by using [jQuery](https://jquery.com/) or
+[Python Requests](http://docs.python-requests.org/en/master/)).
 
 The OpenADMS Server API is based on
-[nginx](https://nginx.org/en/)/[OpenResty](https://openresty.org/en/) and
+[nginx](https://nginx.org/)/[OpenResty](https://openresty.org/) and
 [PostgreSQL](https://www.postgresql.org/). The following nginx modules are
 required:
 
@@ -98,8 +98,9 @@ $ psql -h localhost -U <username> -d timeseries -a -f psql/timeseries.sql
 The PostgreSQL database is now ready to store time series data. Configure nginx
 as a front-end.
 
-## nginx
+### nginx
 Install [nginx](https://nginx.org/) with all required 3rd party modules. On
+Linux, you probably want to use [OpenResty](https://openresty.org/) instead. On
 FreeBSD, the full package can be installed with:
 
 ```
