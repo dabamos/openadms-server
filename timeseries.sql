@@ -1,8 +1,10 @@
 --
--- PostgreSQL database table for observation data, log messages, and sensor node
--- pings.
+-- OpenADMS Server
 --
--- Date:    2020-03-20
+-- PostgreSQL database schema, tables for observation data, log messages, and
+-- sensor node, and pings, as well as PL/pgSQL functions.
+--
+-- Date:    2020-03-22
 -- Author:  Philipp Engel
 --
 
