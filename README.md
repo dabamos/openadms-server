@@ -89,10 +89,10 @@ $ createdb --encoding UTF8 --owner <username> <database>
 
 You may want to create additional users who have read/write privileges to
 selected databases only. Create the SQL schema by executing the file
-`timeseries.sql` from the OpenADMS Server repository with `psql`:
+`psql/timeseries.sql` from the OpenADMS Server repository with `psql`:
 
 ```
-$ psql -h localhost -U <username> -d timeseries -a -f timeseries.sql
+$ psql -h localhost -U <username> -d timeseries -a -f psql/timeseries.sql
 ```
 
 The PostgreSQL database is now ready to store time series data. Configure nginx
@@ -106,10 +106,10 @@ FreeBSD, the full package can be installed with:
 # pkg install www/nginx-full www/lua-resty-core
 ```
 
-Copy the file `nginx.conf` and directory `openadms-server` from the GitHub
-repository to `/usr/local/etc/nginx/` (FreeBSD) or `/etc/nginx/` (Linux) and
-alter the configuration to your set-up. You have to update at least the name of
-the user the nginx process is running under, the connection details of your
+Copy the file `nginx/nginx.conf` and directory `nginx/openadms-server` from the
+GitHub repository to `/usr/local/etc/nginx/` (FreeBSD) or `/etc/nginx/` (Linux)
+and alter the configuration to your set-up. You have to update at least the name
+of the user the nginx process is running under, the connection details of your
 PostgreSQL database, and the actual server name:
 
 ```
@@ -117,7 +117,8 @@ user www;   # User to run nginx process under (or `nobody`).
 
 http {
     # PostgreSQL connection details. Change "localhost" to the IP address of
-    # your database instance, if it is not running on the same host.
+    # your database instance, if it is not running on the same host, and enter
+    # user name and passwort.
     #
     # dbname:   PostgreSQL database name.
     # user:     PostgreSQL user name.
