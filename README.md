@@ -1,4 +1,4 @@
-![OpenADMS Server](https://www.dabamos.de/github/openadms.png)
+![OpenADMS Server](https://www.dabamos.de/github/openadms-server.png)
 
 **OpenADMS Server** is a set of scripts and configuration files to run an HTTP
 service for time series data, obtained from IoT sensor networks based on
