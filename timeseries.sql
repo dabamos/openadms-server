@@ -1,8 +1,12 @@
 --
--- OpenADMS Server
+--  _______                     _______ _____  _______ _______
+-- |       |.-----.-----.-----.|   _   |     \|   |   |     __|
+-- |   -   ||  _  |  -__|     ||       |  --  |       |__     |
+-- |_______||   __|_____|__|__||___|___|_____/|__|_|__|_______|
+--          |__|                                         Server
 --
--- PostgreSQL database schema, tables for observation data, log messages, and
--- sensor node, and pings, as well as PL/pgSQL functions.
+-- PostgreSQL database schema, tables for observation data, log messages,
+-- and heartbeats, as well as PL/pgSQL functions.
 --
 -- Date:    2020-03-22
 -- Author:  Philipp Engel
