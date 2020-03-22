@@ -22,9 +22,127 @@ required:
 * [postgres](https://github.com/FRiCKLE/ngx_postgres)
 * [set-misc](https://github.com/openresty/set-misc-nginx-module)
 
-## Documentation
-The documentation is hosted on the
+## Quick Start
+The complete documentation is hosted on the
 [project website](https://www.dabamos.de/manual/openadms-server/).
+
+### PostgreSQL
+Install [PostgreSQL 11](https://www.postgresql.org/) or higher. On FreeBSD, run:
+
+```
+# pkg databases/postgresql11-server
+```
+
+Add the service to `/etc/rc.conf`:
+
+```
+# sysrc postgresql_enable="YES"
+```
+
+Create a new PostgreSQL database cluster:
+
+```
+# service postgresql initdb
+```
+
+Customise the PostgreSQL configuration file
+`/var/db/postgres/data11/postgresql.conf`. Set the password encryption to
+`scram-sha-256`:
+
+```
+password_encryption = scram-sha-256
+```
+
+Optionally, add another host IP address to `listen_address`. Change the client
+authentication in `/var/db/postgres/data11/pg_hba.conf`. Set the IP address for
+IPv4/IPv6 connections according to your set-up, for example:
+
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     trust
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            scram-sha-256
+host    all             all             <your ip>/32            scram-sha-256
+# IPv6 local connections:
+host    all             all             ::1/128                 scram-sha-256
+```
+
+Start the PostgreSQL server:
+
+```
+# service postgresql start
+```
+
+Set a new password for user `postgres`. After login, add a new database user
+(e.g., `openadms`) and a new database (e.g., `timeseries`):
+
+```
+# passwd postgres
+# su - postgres
+$ createuser --no-superuser --createdb --no-createrole --pwprompt <username>
+Enter password for new role:
+Enter it again:
+$ createdb --encoding UTF8 --owner <username> <database>
+```
+
+You may want to create additional users who have read/write privileges to
+selected databases only. Create the SQL schema by executing the file
+`timeseries.sql` from the OpenADMS Server repository with `psql`:
+
+```
+$ psql -h localhost -U <username> -d timeseries -a -f timeseries.sql
+```
+
+The PostgreSQL database is now ready to store time series data. Configure nginx
+as a front-end.
+
+## nginx
+Install [nginx](https://nginx.org/) with all required 3rd party modules. On
+FreeBSD, the full package can be installed with:
+
+```
+# pkg install www/nginx-full www/lua-resty-core
+```
+
+Copy the file `nginx.conf` and directory `openadms-server` from the GitHub
+repository to `/usr/local/etc/nginx/` (FreeBSD) or `/etc/nginx/` (Linux) and
+alter the configuration to your set-up. You have to update at least the name of
+the user the nginx process is running under, the connection details of your
+PostgreSQL database, and the actual server name:
+
+```
+user www;   # User to run nginx process under (or `nobody`).
+
+http {
+    # PostgreSQL connection details. Change "localhost" to the IP address of
+    # your database instance, if it is not running on the same host.
+    #
+    # dbname:   PostgreSQL database name.
+    # user:     PostgreSQL user name.
+    # password: PostgreSQL password.
+    upstream postgresql {
+        postgres_server     localhost dbname=<database> user=<username> password=<password>;
+        postgres_keepalive  max=200 overflow=reject;
+    }
+
+    server {
+        server_name  www.example.com;   # CHANGE TO YOUR SERVER NAME!
+    }
+}
+```
+
+It is strongly adviced to add an X.509 certificate and change the port to 443.
+Please see the
+[nginx manual](http://nginx.org/en/docs/http/configuring_https_servers.html)
+on how to configure HTTPS servers.
+
+The API uses HTTP BasicAuth for access restriction. Clients must send an
+authorisation header with encoded user name and password. Store login
+credentials in `/usr/local/etc/nginx/.htpasswd`. If you use a different path,
+change `openadms-server/api.conf` accordingly. You can use
+`security/py-htpasswd` to generate `htpasswd` files.
 
 ## API
 | Endpoint                                                                                                               | Method | Description                 |
