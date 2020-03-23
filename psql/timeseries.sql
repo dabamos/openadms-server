@@ -1,10 +1,14 @@
+--  _______                     _______ _____  _______ _______
+-- |       |.-----.-----.-----.|   _   |     \|   |   |     __|
+-- |   -   ||  _  |  -__|     ||       |  --  |       |__     |
+-- |_______||   __|_____|__|__||___|___|_____/|__|_|__|_______|
+--          |__|                                         Server
 --
--- PostgreSQL database table for observation data, log messages, and sensor node
--- pings.
+-- PostgreSQL database schema, tables for observation data, log messages,
+-- and heartbeats, as well as PL/pgSQL functions.
 --
--- Date:    2020-03-20
+-- Date:    2020-03-23
 -- Author:  Philipp Engel
---
 
 BEGIN;
 
