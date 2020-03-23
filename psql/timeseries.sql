@@ -1,13 +1,8 @@
---  _______                     _______ _____  _______ _______
--- |       |.-----.-----.-----.|   _   |     \|   |   |     __|
--- |   -   ||  _  |  -__|     ||       |  --  |       |__     |
--- |_______||   __|_____|__|__||___|___|_____/|__|_|__|_______|
---          |__|                                         Server
 --
--- PostgreSQL database schema, tables for observation data, log messages,
--- and heartbeats, as well as PL/pgSQL functions.
+-- PostgreSQL database table for observation data, log messages, and sensor node
+-- pings.
 --
--- Date:    2020-03-22
+-- Date:    2020-03-20
 -- Author:  Philipp Engel
 --
 
@@ -118,11 +113,11 @@ RETURNS text AS $$
 DECLARE
     result text;
 BEGIN
-    SELECT COALESCE(row_to_json(data), '{}'::json)
+    SELECT data
     INTO result
     FROM openadms.observations
     WHERE data->>'type' = 'observation' AND data->>'id' = obs_id;
-    RETURN result;
+    RETURN COALESCE(result, '{}'::text);
 END;
 $$ LANGUAGE plpgsql;
 
@@ -221,7 +216,7 @@ RETURNS text AS $$
 DECLARE
     result text;
 BEGIN
-    SELECT COALESCE(row_to_json(t), '{}'::json)
+    SELECT COALESCE((array_agg(row_to_json(t)))[1], '{}'::json)
     INTO result
     FROM (
         SELECT pid, nid, freq, ip, dt FROM openadms.heartbeats WHERE pid = project_id AND nid = node_id
@@ -253,7 +248,7 @@ RETURNS text AS $$
 DECLARE
     result text;
 BEGIN
-    SELECT COALESCE(row_to_json(t), '{}'::json)
+    SELECT COALESCE((array_agg(row_to_json(t)))[1], '{}'::json)
     INTO result
     FROM (SELECT id, pid, nid, dt, module, level, message FROM openadms.logs WHERE id = log_id) t;
     RETURN result;
@@ -268,7 +263,7 @@ RETURNS text AS $$
 DECLARE
     result text;
 BEGIN
-    SELECT array_to_string(array[id::bigint, pid::text, nid::text, dt::text, module::text, level::text, message::text], ',')
+    SELECT array_to_string(array[id::text, pid::text, nid::text, dt::text, module::text, level::text, message::text], ',')
     INTO result
     FROM openadms.logs
     WHERE id = log_id;
@@ -289,7 +284,7 @@ BEGIN
     FROM (
         SELECT id, pid, nid, dt, module, level, message
         FROM openadms.logs
-        WHERE pid = project_id AND nid = node_id AND (dt BETWEEN dt_from::timestamptz AND dt_to::timestamptz)
+        WHERE pid = project_id AND nid = node_id AND dt >= dt_from::timestamptz AND dt < dt_to::timestamptz
     ) t;
     RETURN result;
 END;
@@ -303,7 +298,7 @@ RETURNS text AS $$
 DECLARE
     result text;
 BEGIN
-    SELECT array_to_string(array[id::bigint, pid::text, nid::text, dt::text, module::text, level::text, message::text], ',')
+    SELECT COALESCE(array_to_string(array[id::text, pid::text, nid::text, dt::text, module::text, level::text, message::text], ','), ''::text)
     INTO result
     FROM openadms.logs
     WHERE pid = project_id AND nid = node_id AND (dt BETWEEN dt_from::timestamptz AND dt_to::timestamptz);

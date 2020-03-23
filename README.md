@@ -142,9 +142,9 @@ on how to configure HTTPS servers.
 
 The API uses HTTP BasicAuth for access restriction. Clients must send an
 authorisation header with encoded user name and password. Store login
-credentials in `/usr/local/etc/nginx/.htpasswd`. If you use a different path,
-change `openadms-server/api.conf` accordingly. You can use
-`security/py-htpasswd` to generate `htpasswd` files.
+credentials in `.htpasswd` along your `nginx.conf`. If you use a different path,
+change `nginx.conf` accordingly. You can use `security/py-htpasswd` to generate
+`htpasswd` files.
 
 ## API
 | Endpoint                                                                                                               | Method | Description                 |
