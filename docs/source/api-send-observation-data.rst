@@ -31,13 +31,6 @@ Success Response
 
 Error Response
 --------------
-Observation data was not inserted:
-
-  * **Request:** ``POST``
-  * **Request Fields:** ``Content-Type: application/json``
-  * **Code:** 204 No content
-  * **Content:** –
-
 Wrong ``Content-Type``:
 
   * **Request:** ``POST``

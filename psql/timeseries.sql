@@ -7,7 +7,7 @@
 -- PostgreSQL database schema, tables for observation data, log messages,
 -- and heartbeats, as well as PL/pgSQL functions.
 --
--- Date:    2020-03-23
+-- Date:    2020-03-24
 -- Author:  Philipp Engel
 
 BEGIN;
@@ -18,13 +18,13 @@ SET CLIENT_ENCODING = 'UTF8';
 CREATE SCHEMA openadms;
 
 -- Create the observations table.
-CREATE TABLE openadms.observations (
+CREATE TABLE IF NOT EXISTS openadms.observations (
     id   BIGSERIAL PRIMARY KEY,
     data JSONB     NOT NULL
 );
 
 -- Create the heartbeats table for sensor node pings.
-CREATE TABLE openadms.heartbeats (
+CREATE TABLE IF NOT EXISTS openadms.heartbeats (
     pid  VARCHAR(80) NOT NULL,
     nid  VARCHAR(80) NOT NULL,
     freq BIGINT,
@@ -34,7 +34,7 @@ CREATE TABLE openadms.heartbeats (
 );
 
 -- Create the log messages table.
-CREATE TABLE openadms.logs (
+CREATE TABLE IF NOT EXISTS openadms.logs (
     id      BIGSERIAL PRIMARY KEY,
     pid     VARCHAR(80)  NOT NULL,
     nid     VARCHAR(80)  NOT NULL,
@@ -45,19 +45,19 @@ CREATE TABLE openadms.logs (
 );
 
 -- Create additional indices for table `openadms.observations`.
-CREATE INDEX idx_obs_id        ON openadms.observations ((data->>'id'));
-CREATE INDEX idx_obs_nid       ON openadms.observations ((data->>'nid'));
-CREATE INDEX idx_obs_pid       ON openadms.observations ((data->>'pid'));
-CREATE INDEX idx_obs_sensor    ON openadms.observations ((data->>'sensorName'));
-CREATE INDEX idx_obs_target    ON openadms.observations ((data->>'target'));
-CREATE INDEX idx_obs_timestamp ON openadms.observations ((data->>'timestamp'));
-CREATE INDEX idx_obs_type      ON openadms.observations ((data->>'type'));
+CREATE INDEX IF NOT EXISTS idx_obs_id        ON openadms.observations ((data->>'id'));
+CREATE INDEX IF NOT EXISTS idx_obs_nid       ON openadms.observations ((data->>'nid'));
+CREATE INDEX IF NOT EXISTS idx_obs_pid       ON openadms.observations ((data->>'pid'));
+CREATE INDEX IF NOT EXISTS idx_obs_sensor    ON openadms.observations ((data->>'sensorName'));
+CREATE INDEX IF NOT EXISTS idx_obs_target    ON openadms.observations ((data->>'target'));
+CREATE INDEX IF NOT EXISTS idx_obs_timestamp ON openadms.observations ((data->>'timestamp'));
+CREATE INDEX IF NOT EXISTS idx_obs_type      ON openadms.observations ((data->>'type'));
 
 -- Create additional indices for table `openadms.logs`.
-CREATE INDEX idx_log_dt    ON openadms.logs (dt);
-CREATE INDEX idx_log_level ON openadms.logs (level);
-CREATE INDEX idx_log_nid   ON openadms.logs (nid);
-CREATE INDEX idx_log_pid   ON openadms.logs (pid);
+CREATE INDEX IF NOT EXISTS idx_log_dt    ON openadms.logs (dt);
+CREATE INDEX IF NOT EXISTS idx_log_level ON openadms.logs (level);
+CREATE INDEX IF NOT EXISTS idx_log_nid   ON openadms.logs (nid);
+CREATE INDEX IF NOT EXISTS idx_log_pid   ON openadms.logs (pid);
 
 --
 -- Returns server information: database name, server time, server uptime, PostgreSQL version.
@@ -207,7 +207,8 @@ DECLARE
 BEGIN
     SELECT DISTINCT data->>'nid'
     INTO result
-    FROM openadms.observations WHERE data->>'type' = 'observation' AND data->>'pid' = project_id;
+    FROM openadms.observations
+    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id;
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
@@ -223,7 +224,9 @@ BEGIN
     SELECT COALESCE((array_agg(row_to_json(t)))[1], '{}'::json)
     INTO result
     FROM (
-        SELECT pid, nid, freq, ip, dt FROM openadms.heartbeats WHERE pid = project_id AND nid = node_id
+        SELECT pid, nid, freq, ip, dt
+        FROM openadms.heartbeats
+        WHERE pid = project_id AND nid = node_id
     ) t;
     RETURN result;
 END;
@@ -239,7 +242,8 @@ DECLARE
 BEGIN
     SELECT array_to_string(array[pid::text, nid::text, freq::int, ip::text, dt::text], ',')
     INTO result
-    FROM openadms.heartbeats WHERE pid = project_id AND nid = node_id;
+    FROM openadms.heartbeats
+    WHERE pid = project_id AND nid = node_id;
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
@@ -254,7 +258,11 @@ DECLARE
 BEGIN
     SELECT COALESCE((array_agg(row_to_json(t)))[1], '{}'::json)
     INTO result
-    FROM (SELECT id, pid, nid, dt, module, level, message FROM openadms.logs WHERE id = log_id) t;
+    FROM (
+        SELECT id, pid, nid, dt, module, level, message
+        FROM openadms.logs
+        WHERE id = log_id
+    ) t;
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
@@ -288,7 +296,8 @@ BEGIN
     FROM (
         SELECT id, pid, nid, dt, module, level, message
         FROM openadms.logs
-        WHERE pid = project_id AND nid = node_id AND dt >= dt_from::timestamptz AND dt < dt_to::timestamptz
+        WHERE pid = project_id AND nid = node_id
+            AND dt >= dt_from::timestamptz AND dt < dt_to::timestamptz
     ) t;
     RETURN result;
 END;
@@ -305,7 +314,8 @@ BEGIN
     SELECT COALESCE(array_to_string(array[id::text, pid::text, nid::text, dt::text, module::text, level::text, message::text], ','), ''::text)
     INTO result
     FROM openadms.logs
-    WHERE pid = project_id AND nid = node_id AND (dt BETWEEN dt_from::timestamptz AND dt_to::timestamptz);
+    WHERE pid = project_id AND nid = node_id
+        AND dt >= dt_from::timestamptz AND dt < dt_to::timestamptz;
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
@@ -353,7 +363,8 @@ BEGIN
     SELECT COALESCE(json_agg(DISTINCT data->>'target'), '[]'::json)
     INTO result
     FROM openadms.observations
-    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name;
+    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
+        AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name;
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
@@ -369,7 +380,8 @@ BEGIN
     SELECT DISTINCT data->>'target'
     INTO result
     FROM openadms.observations
-    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name;
+    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
+        AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name;
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
@@ -385,8 +397,9 @@ BEGIN
     SELECT COALESCE(json_agg(DISTINCT data->>'id'), '[]'::json)
     INTO result
     FROM openadms.observations
-    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id AND data->>'nid' = node_id
-    AND data->>'sensorName' = sensor_name AND data->>'target' = target_name;
+    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
+        AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name
+        AND data->>'target' = target_name;
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
@@ -402,8 +415,9 @@ BEGIN
     SELECT DISTINCT data->>'id'
     INTO result
     FROM openadms.observations
-    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id AND data->>'nid' = node_id
-    AND data->>'sensorName' = sensor_name AND data->>'target' = target_name;
+    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
+        AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name
+        AND data->>'target' = target_name;
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
@@ -419,9 +433,10 @@ BEGIN
     SELECT COALESCE(json_agg(data), '[]'::json)
     INTO result
     FROM openadms.observations
-    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id AND data->>'nid' = node_id
-    AND data->>'sensorName' = sensor_name AND data->>'target' = target_name
-    AND (data->>'timestamp' BETWEEN dt_from AND dt_to);
+    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
+        AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name
+        AND data->>'target' = target_name
+        AND (data->>'timestamp' BETWEEN dt_from AND dt_to);
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
@@ -437,9 +452,10 @@ BEGIN
     SELECT COALESCE(json_agg(data), '[]'::json)
     INTO result
     FROM openadms.observations
-    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id AND data->>'nid' = node_id
-    AND data->>'sensorName' = sensor_name AND data->>'target' = target_name
-    AND (data->>'timestamp' BETWEEN dt_from AND dt_to);
+    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
+        AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name
+        AND data->>'target' = target_name
+        AND (data->>'timestamp' BETWEEN dt_from AND dt_to);
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;

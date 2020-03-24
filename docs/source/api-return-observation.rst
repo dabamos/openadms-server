@@ -72,13 +72,13 @@ Return observation data in CSV format:
 
 Error Response
 --------------
-No observations:
+No observation for this id:
 
 * **Request:** ``GET``
 * **Request Fields:** ``Accept: application/json``
-* **Code:** 410 Gone
+* **Code:** 200 OK
 * **Response Fields:** ``Content-Type: application/json``
-* **Content:** ``{ "code": 410, "message": "Gone." }``
+* **Content:** ``{}``
 
 Sample Call
 -----------

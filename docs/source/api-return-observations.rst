@@ -29,17 +29,17 @@ Request Fields
 URL Params
 ----------
 The start and end timestamp can be provided as URL parameters (defaults are
-``1900`` and ``2200``).
+``1900-01-01T00:00:00`` and ``2200-12-31T00:00:00"``).
 
 Optional
 ^^^^^^^^
 ``start=[string]``
 
-Example: ``start=2018-11-05T11:50:00.000000+00:00``
+Example: ``start=2018-11-05T11:50:00``
 
 ``end=[string]``
 
-Example: ``end=2019-11-05T11:54:00.000000+00:00``
+Example: ``end=2019-11-05T11:54:00``
 
 Success Response
 ----------------
@@ -94,9 +94,9 @@ No observations:
 
 * **Request:** ``GET``
 * **Request Fields:** ``Accept: application/json``
-* **Code:** 410 Gone
+* **Code:** 200 OK
 * **Response Fields:** ``Content-Type: application/json``
-* **Content:** ``{ "code": 410, "message": "Gone." }``
+* **Content:** ``[]``
 
 Sample Call
 -----------
@@ -105,4 +105,4 @@ cURL
 ::
 
     $ curl -X GET -u user:password -H "Accept: application/json" \
-      -G "http://localhost/api/v1/projects/0a5a2c9caa45405b9967584154ba1341/nodes/00ce160e5cbb49b9bc2ee6f243f87841/sensors/TM30/targets/P100/observations/?start=2018-11-05T11:50:00.000000+00:00&end=2019-11-05T11:54:00.000000+00:00"
+      -G "http://localhost/api/v1/projects/<project id>/nodes/<node id>/sensors/<sensor>/targets/<target>/observations/?start=2018-11-05T11:50:00&end=2019-11-05T11:54:00"

@@ -2,7 +2,7 @@
 PostgreSQL
 ==========
 
-Install PostgreSQL 9.3 or higher. On FreeBSD, run:
+Install PostgreSQL 11 or higher. On FreeBSD, run:
 
 .. code-block:: console
 
@@ -23,8 +23,8 @@ Create a new PostgreSQL database cluster:
 Configuration
 -------------
 Customise the PostgreSQL configuration file
-``/var/db/postgres/data11/postgresql.conf``. Add the IP address of the host to
-``listen_address``:
+``/var/db/postgres/data11/postgresql.conf``. Optionally, add the external IP
+address of the host to ``listen_address``:
 
 .. code-block:: console
 
@@ -58,7 +58,7 @@ Start the PostgreSQL server:
     # service postgresql start
 
 Set a new password for user ``postgres``. After login, create a new database
-user (e.g., ``openadms-server``) and a new database (e.g., ``timeseries``):
+user (e.g., ``openadms``) and a new database (e.g., ``timeseries``):
 
 .. code-block:: console
 
@@ -84,10 +84,10 @@ repository with ``psql``:
 
 .. code-block:: console
 
-    $ psql -h localhost -U <username> -d timeseries -a -f timeseries.sql
+    $ psql -h localhost -U <username> -d timeseries -a -f psql/timeseries.sql
 
-The tables ``observations`` and ``heartbeats`` should be in database
-``timeseries``.
+The tables ``observations``, ``logs``, and ``heartbeats`` should be in database
+``timeseries`` now.
 
 .. code-block:: console
 
@@ -99,11 +99,12 @@ The tables ``observations`` and ``heartbeats`` should be in database
     ----------+--------------+-------+-----------------+------------+-------------
      openadms | heartbeats   | table | <username>      | 0 bytes    |
      openadms | observations | table | <username>      | 8192 bytes |
-    (2 rows)
+     openadms | logs         | table | <username>      | 0 bytes    |
+    (3 rows)
     timeseries=> \q
 
 The PostgreSQL database is now ready to store time series data. Use nginx as a
-front-end.
+REST front-end.
 
 Automated Backups
 -----------------

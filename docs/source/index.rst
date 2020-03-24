@@ -45,6 +45,7 @@ This work is licenced under the `Creative Commons Attribution 3.0 Germany
    nginx
    apache-couchdb
    api
+   data-retrieval
 
 Indices and tables
 ==================

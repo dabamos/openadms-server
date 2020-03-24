@@ -56,9 +56,9 @@ No sensors in database:
 
 * **Request:** ``GET``
 * **Request Fields:** ``Accept: application/json``
-* **Code:** 410 Gone
+* **Code:** 200 OK
 * **Response Fields:** ``Content-Type: application/json``
-* **Content:** ``{ "code": 410, "message": "No rows." }``
+* **Content:** ``[]``
 
 Sample Call
 -----------

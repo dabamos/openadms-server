@@ -33,13 +33,6 @@ Success Response
 
 Error Response
 --------------
-Heartbeat not successful:
-
-  * **Request:** ``POST``
-  * **Request Fields:** ``Content-Type: application/x-www-form-urlencoded``
-  * **Code:** 410 Gone
-  * **Content:** ``'{ "code": 410, "message": "Gone." }``
-
 Wrong ``Content-Type``:
 
   * **Request:** ``POST``
@@ -58,3 +51,16 @@ Sending a heartbeat:
 
     $ curl -X POST -u user:password -H "Content-Type: application/x-www-form-urlencoded" \
       -d "pid=<project id>&nid=<node id>&freq=300" http://localhost/api/v1/heartbeats/
+
+Python
+^^^^^^
+Sending a heartbeat with `Requests`_:
+
+::
+
+    response = requests.post('http://localhost/api/v1/heartbeats/',
+                             auth=('<user>', '<password>'),
+                             data={'pid': project_id, 'nid': node_id, 'freq': frequency},
+                             timeout=30)
+
+.. _Requests: https://requests.readthedocs.io/en/master/
