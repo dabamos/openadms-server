@@ -15,7 +15,7 @@ BEGIN;
 SET CLIENT_ENCODING = 'UTF8';
 
 -- DROP SCHEMA IF EXISTS openadms CASCADE;
-CREATE SCHEMA openadms;
+CREATE SCHEMA IF NOT EXISTS openadms;
 
 -- Create the observations table.
 CREATE TABLE IF NOT EXISTS openadms.observations (
@@ -126,7 +126,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 --
--- Returns a single observation by id in JSON format.
+-- Returns a single observation by id in CSV format.
 --
 CREATE OR REPLACE FUNCTION openadms.get_observation_csv(obs_id text)
 RETURNS text AS $$
@@ -134,9 +134,9 @@ DECLARE
     result text;
 BEGIN
     SELECT (
-        SELECT concat_ws(',', data->>'timestamp', data->>'pid', data->>'nid', data->>'id', data->>'sensorName', data->>'target', string_agg(conc, ','))
+        SELECT CONCAT_WS(',', data->>'timestamp', data->>'pid', data->>'nid', data->>'id', data->>'sensorName', data->>'target', string_agg(conc, ','))
         FROM (
-            SELECT concat_ws(',', key, string_agg(value, ',')) AS conc
+            SELECT CONCAT_WS(',', key, string_agg(value, ',')) AS conc
             FROM (
                 SELECT key, (jsonb_each_text(value)).value
                 FROM jsonb_each(data->'responseSets')
@@ -146,7 +146,7 @@ BEGIN
     INTO result
     FROM openadms.observations
     WHERE data->>'type' = 'observation' AND data->>'id' = obs_id;
-    RETURN result;
+    RETURN COALESCE(result, ''::text);
 END;
 $$ LANGUAGE plpgsql;
 
@@ -169,15 +169,12 @@ $$ LANGUAGE plpgsql;
 -- Returns an array of all project ids in CSV format.
 --
 CREATE OR REPLACE FUNCTION openadms.get_project_ids_csv()
-RETURNS text AS $$
-DECLARE
-    result text;
+RETURNS SETOF text AS $$
 BEGIN
+    RETURN QUERY
     SELECT DISTINCT data->>'pid'
-    INTO result
     FROM openadms.observations
     WHERE data->>'type' = 'observation';
-    RETURN result;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -200,16 +197,13 @@ $$ LANGUAGE plpgsql;
 --
 -- Returns an array of all sensor node ids in CSV format.
 --
-CREATE OR REPLACE FUNCTION openadms.get_project_ids_csv(project_id text)
-RETURNS text AS $$
-DECLARE
-    result text;
+CREATE OR REPLACE FUNCTION openadms.get_sensor_node_ids_csv(project_id text)
+RETURNS SETOF text AS $$
 BEGIN
+    RETURN QUERY
     SELECT DISTINCT data->>'nid'
-    INTO result
     FROM openadms.observations
     WHERE data->>'type' = 'observation' AND data->>'pid' = project_id;
-    RETURN result;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -240,11 +234,11 @@ RETURNS text AS $$
 DECLARE
     result text;
 BEGIN
-    SELECT array_to_string(array[pid::text, nid::text, freq::int, ip::text, dt::text], ',')
+    SELECT CONCAT_WS(',', pid, nid, freq, ip, dt)
     INTO result
     FROM openadms.heartbeats
     WHERE pid = project_id AND nid = node_id;
-    RETURN result;
+    RETURN COALESCE(result, ''::text);
 END;
 $$ LANGUAGE plpgsql;
 
@@ -275,11 +269,11 @@ RETURNS text AS $$
 DECLARE
     result text;
 BEGIN
-    SELECT array_to_string(array[id::text, pid::text, nid::text, dt::text, module::text, level::text, message::text], ',')
+    SELECT CONCAT_WS(',', id, pid, nid, dt, module, level, message)
     INTO result
     FROM openadms.logs
     WHERE id = log_id;
-    RETURN result;
+    RETURN COALESCE(result, ''::text);
 END;
 $$ LANGUAGE plpgsql;
 
@@ -298,6 +292,7 @@ BEGIN
         FROM openadms.logs
         WHERE pid = project_id AND nid = node_id
             AND dt >= dt_from::timestamptz AND dt < dt_to::timestamptz
+        ORDER BY dt
     ) t;
     RETURN result;
 END;
@@ -307,16 +302,14 @@ $$ LANGUAGE plpgsql;
 -- Returns log messages of given sensor node by time range in CSV format.
 --
 CREATE OR REPLACE FUNCTION openadms.get_logs_csv(project_id text, node_id text, dt_from text, dt_to text)
-RETURNS text AS $$
-DECLARE
-    result text;
+RETURNS SETOF text AS $$
 BEGIN
-    SELECT COALESCE(array_to_string(array[id::text, pid::text, nid::text, dt::text, module::text, level::text, message::text], ','), ''::text)
-    INTO result
+    RETURN QUERY
+    SELECT CONCAT_WS(',', id, pid, nid, dt, module, level, message)
     FROM openadms.logs
     WHERE pid = project_id AND nid = node_id
-        AND dt >= dt_from::timestamptz AND dt < dt_to::timestamptz;
-    RETURN result;
+        AND dt >= dt_from::timestamptz AND dt < dt_to::timestamptz
+    ORDER BY dt;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -340,15 +333,12 @@ $$ LANGUAGE plpgsql;
 -- Returns all sensor names of given sensor node in CSV format.
 --
 CREATE OR REPLACE FUNCTION openadms.get_sensors_csv(project_id text, node_id text)
-RETURNS text AS $$
-DECLARE
-    result text;
+RETURNS SETOF text AS $$
 BEGIN
+    RETURN QUERY
     SELECT DISTINCT data->>'sensorName'
-    INTO result
     FROM openadms.observations
     WHERE data->>'type' = 'observation' AND data->>'pid' = project_id AND data->>'nid' = node_id;
-    RETURN result;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -373,16 +363,13 @@ $$ LANGUAGE plpgsql;
 -- Returns all target names of given sensor node in CSV format.
 --
 CREATE OR REPLACE FUNCTION openadms.get_targets_csv(project_id text, node_id text, sensor_name text)
-RETURNS text AS $$
-DECLARE
-    result text;
+RETURNS SETOF text AS $$
 BEGIN
+    RETURN QUERY
     SELECT DISTINCT data->>'target'
-    INTO result
     FROM openadms.observations
     WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
         AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name;
-    RETURN result;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -408,17 +395,14 @@ $$ LANGUAGE plpgsql;
 -- Returns all observation ids of given target in CSV format.
 --
 CREATE OR REPLACE FUNCTION openadms.get_observation_ids_csv(project_id text, node_id text, sensor_name text, target_name text)
-RETURNS text AS $$
-DECLARE
-    result text;
+RETURNS SETOF text AS $$
 BEGIN
+    RETURN QUERY
     SELECT DISTINCT data->>'id'
-    INTO result
     FROM openadms.observations
     WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
         AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name
         AND data->>'target' = target_name;
-    RETURN result;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -430,13 +414,17 @@ RETURNS text AS $$
 DECLARE
     result text;
 BEGIN
-    SELECT COALESCE(json_agg(data), '[]'::json)
+    SELECT COALESCE(json_agg(t), '[]'::json)
     INTO result
-    FROM openadms.observations
-    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
-        AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name
-        AND data->>'target' = target_name
-        AND (data->>'timestamp' BETWEEN dt_from AND dt_to);
+    FROM (
+        SELECT data
+        FROM openadms.observations
+        WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
+            AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name
+            AND data->>'target' = target_name
+            AND (data->>'timestamp' BETWEEN dt_from AND dt_to)
+        ORDER BY data->>'timestamp'
+    ) t;
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
@@ -445,18 +433,25 @@ $$ LANGUAGE plpgsql;
 -- Returns observations of given target and time range in CSV format.
 --
 CREATE OR REPLACE FUNCTION openadms.get_observations_csv(project_id text, node_id text, sensor_name text, target_name text, dt_from text, dt_to text)
-RETURNS text AS $$
-DECLARE
-    result text;
+RETURNS SETOF text AS $$
 BEGIN
-    SELECT COALESCE(json_agg(data), '[]'::json)
-    INTO result
+    RETURN QUERY
+    SELECT (
+        SELECT CONCAT_WS(',', data->>'timestamp', data->>'pid', data->>'nid', data->>'id', data->>'sensorName', data->>'target', string_agg(conc, ','))
+        FROM (
+            SELECT CONCAT_WS(',', key, string_agg(value, ',')) AS conc
+            FROM (
+                SELECT key, (jsonb_each_text(value)).value
+                FROM jsonb_each(data->'responseSets')
+            ) AS x GROUP BY key
+        ) AS csv
+    ) AS csv
     FROM openadms.observations
     WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
         AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name
         AND data->>'target' = target_name
-        AND (data->>'timestamp' BETWEEN dt_from AND dt_to);
-    RETURN result;
+        AND (data->>'timestamp' BETWEEN dt_from AND dt_to)
+    ORDER BY data->>'timestamp';
 END;
 $$ LANGUAGE plpgsql;
 
