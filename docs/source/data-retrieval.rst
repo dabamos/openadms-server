@@ -83,8 +83,8 @@ GNU Octave
 ----------
 
 The `URL manipulation tools`_ of `GNU Octave`_ can directly download resources
-from OpenADMS Server into the current workspace. Using the `jsonlab`_ library
-outputs:
+from OpenADMS Server into the current workspace. The example uses the `jsonlab`_
+library:
 
 .. code-block:: matlab
 

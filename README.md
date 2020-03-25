@@ -144,7 +144,11 @@ The API uses HTTP BasicAuth for access restriction. Clients must send an
 authorisation header with encoded user name and password. Store login
 credentials in `.htpasswd` along your `nginx.conf`. If you use a different path,
 change `nginx.conf` accordingly. You can use `security/py-htpasswd` to generate
-`htpasswd` files.
+a `.htpasswd` file, or simply run OpenSSL:
+
+```
+$ printf "<username>:$(openssl passwd -crypt <password>)\n" >> .htpasswd
+```
 
 ## API
 | Endpoint                                                                                                               | Method | Description                 |

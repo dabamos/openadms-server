@@ -54,7 +54,11 @@ The API uses HTTP BasicAuth for access restriction. Clients must send an
 authorisation header with encoded user name and password. Store login
 credentials in ``/usr/local/etc/nginx/.htpasswd``. If you use a different path,
 change ``openadms-server/api.conf`` accordingly. You can use
-`security/py-htpasswd`_ to generate ``htpasswd`` files.
+`security/py-htpasswd`_ to generate a ``.htpasswd``, or simply run OpenSSL:
+
+::
+
+    $ printf "<username>:$(openssl passwd -crypt <password>)\n" >> .htpasswd
 
 .. _nginx: https://nginx.org/
 .. _OpenResty: https://openresty.org/
