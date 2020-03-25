@@ -49,7 +49,11 @@ In CSV format:
 * **Request Fields:** ``Accept: text/csv``
 * **Code:** 200 OK
 * **Response Fields:** ``Content-Type: text/csv``
-* **Content:** ``8,4a2e8b9d87d849e38bb6911b9f2364ea,21bcf8c16a664b17bbc9cd4221fd8541,2020-03-21 04:18:05+01,errorGenerator,warning,AUTO GENERATED WARNING #1``
+* **Content:**
+
+::
+
+    8,4a2e8b9d87d849e38bb6911b9f2364ea,21bcf8c16a664b17bbc9cd4221fd8541,2020-03-21 04:18:05+01,errorGenerator,warning,AUTO GENERATED WARNING #1
 
 Error Response
 --------------

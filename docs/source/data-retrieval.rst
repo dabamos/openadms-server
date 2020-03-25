@@ -182,7 +182,7 @@ Parse are are fetched from CDN.
                 </tbody>
             </table>
 
-            <script type="text/javascript">
+            <script type="application/javascript">
                 $(function() {
                     $('#csv-fetch').click(function() {
                         let $table = $('#csv-table');
@@ -198,6 +198,7 @@ Parse are are fetched from CDN.
 
                         if (!host || !user || !password || !pid || !nid || !sensor || !target) {
                             $status.html('Please fill out all input fields.');
+                            return;
                         }
 
                         let is_first = true;
