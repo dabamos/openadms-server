@@ -134,6 +134,7 @@ Parse are are fetched from CDN.
                 thead   { background-color: LightGray; }
                 td, th  { padding: .5em; }
                 td      { text-align: right; }
+                th      { text-transform: uppercase; }
             </style>
         </head>
         <body>
@@ -174,7 +175,7 @@ Parse are are fetched from CDN.
             <p id="csv-status">Fill out the form and click “Fetch” to retrieve
             observations.</p>
             <hr>
-            <h2>Fetches Observations</h2>
+            <h2>Fetched Observations</h2>
             <table border="1" id="csv-table">
                 <thead>
                 </thead>
