@@ -152,20 +152,20 @@ $ printf "<username>:$(openssl passwd -crypt <password>)\n" >> .htpasswd
 ## API
 | Method | Endpoint                                                                                                               | Description                 |
 |--------|------------------------------------------------------------------------------------------------------------------------|-----------------------------|
-| `GET`  | `/api/v1/`                                                                                                             | Returns system info.        |
-| `POST` | `/api/v1/heartbeats/`                                                                                                  | Stores heartbeat.           |
-| `POST` | `/api/v1/logs/`                                                                                                        | Stores log message.         |
-| `GET`  | `/api/v1/logs/<id>/`                                                                                                   | Returns single log message. |
-| `POST` | `/api/v1/observations/`                                                                                                | Stores observation.         |
-| `GET`  | `/api/v1/observations/<id>/`                                                                                           | Returns observation.        |
-| `GET`  | `/api/v1/projects/`                                                                                                    | Returns project ids.        |
-| `GET`  | `/api/v1/projects/<pid>/nodes/`                                                                                        | Returns sensor node ids.    |
-| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/heartbeat/`                                                                        | Returns last heartbeat.     |
-| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/logs/?start=<timestamp>&end=<timestamp>`                                           | Returns log messages.       |
-| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/sensors/`                                                                          | Returns sensor names.       |
-| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/`                                                         | Returns target names.       |
-| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/<target>/ids/`                                            | Returns observation ids.    |
-| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/<target>/observations/?start=<timestamp>&end=<timestamp>` | Returns observations.       |
+| GET    | `/api/v1/`                                                                                                             | Returns system info.        |
+| POST   | `/api/v1/heartbeats/`                                                                                                  | Stores heartbeat.           |
+| POST   | `/api/v1/logs/`                                                                                                        | Stores log message.         |
+| GET    | `/api/v1/logs/<id>/`                                                                                                   | Returns single log message. |
+| POST   | `/api/v1/observations/`                                                                                                | Stores observation.         |
+| GET    | `/api/v1/observations/<id>/`                                                                                           | Returns observation.        |
+| GET    | `/api/v1/projects/`                                                                                                    | Returns project ids.        |
+| GET    | `/api/v1/projects/<pid>/nodes/`                                                                                        | Returns sensor node ids.    |
+| GET    | `/api/v1/projects/<pid>/nodes/<nid>/heartbeat/`                                                                        | Returns last heartbeat.     |
+| GET    | `/api/v1/projects/<pid>/nodes/<nid>/logs/?start=<timestamp>&end=<timestamp>`                                           | Returns log messages.       |
+| GET    | `/api/v1/projects/<pid>/nodes/<nid>/sensors/`                                                                          | Returns sensor names.       |
+| GET    | `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/`                                                         | Returns target names.       |
+| GET    | `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/<target>/ids/`                                            | Returns observation ids.    |
+| GET    | `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/<target>/observations/?start=<timestamp>&end=<timestamp>` | Returns observations.       |
 
 ## Build the Documentation
 You can then generate the documentation with
