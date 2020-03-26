@@ -60,9 +60,9 @@ instance:
 
 Access the Fauxton web-interface to administrate the CouchDB instance, for
 example at `https://couchdb.example.com/_utils/`_. Fauxton allows you to create
-new databases and define map/reduce functions for them.  Make sure that all
+new databases and define map/reduce functions for them.  **Make sure that all
 databases have at least one admin or member, otherwise they are publicly
-readable!
+readable!**
 
 CouchDB Views
 -------------
@@ -101,8 +101,9 @@ request to select a range of observations:
      -d startkey='["project1","node1","p99","2016"]' \
      -d endkey='["project1","node1","p99","2018"]' | jq
 
-This will limit the result to observations with given project id ``project1``,
-sensor node id ``node1``, target name ``p99``, and timestamp between \`
+This will limit the results to observations with given project id ``project1``,
+sensor node id ``node1``, target name ``p99``, and timestamp between years
+``2016`` and ``2018``.
 
 .. _`https://couchdb.example.com/_utils/`: https://couchdb.example.com/_utils/
 .. _jq: https://stedolan.github.io/jq/

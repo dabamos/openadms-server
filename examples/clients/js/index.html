@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+        <script type="application/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js"></script>
+
+        <title>OpenADMS Server API Test</title>
+
+        <style type="text/css">
+            body    { background-color: Beige; padding: 4em; }
+            tbody   { background-color: White; }
+            thead   { background-color: LightGray; }
+            td, th  { padding: .5em; }
+            td      { text-align: right; }
+            th      { text-transform: uppercase; }
+        </style>
+    </head>
+    <body>
+        <h1>OpenADMS Server API Test</h1>
+        <p>Basic example that fetches observations from an OpenADMS Server
+        instance and lists the data inside a table, using jQuery and
+        Papa Parse.</p>
+        <form>
+            <p>
+                <label for="csv-host">Host:</label><br>
+                <input id="csv-host" placeholder="https://api.example.com" size="40" type="text"><br>
+
+                <label for="csv-user">User Name:</label><br>
+                <input id="csv-user" size="40" type="text"><br>
+
+                <label for="csv-password">Password:</label><br>
+                <input id="csv-password" size="40" type="password">
+            </p>
+            <p>
+                <label for="csv-pid">Project ID:</label><br>
+                <input id="csv-pid" size="40" type="text"><br>
+
+                <label for="csv-nid">Sensor Node ID:</label><br>
+                <input id="csv-nid" size="40" type="text">
+            </p>
+            <p>
+                <label for="csv-sensor">Sensor Name:</label><br>
+                <input id="csv-sensor" size="40" type="text"><br>
+
+                <label for="csv-target">Target Name:</label><br>
+                <input id="csv-target" size="40" type="text">
+            </p>
+            <p>
+                <input id="csv-fetch" type="button" value="Fetch">
+                <input type="reset" value="Clear">
+            </p>
+        </form>
+        <p id="csv-status">Fill out the form and click “Fetch” to retrieve
+        observations.</p>
+        <hr>
+        <h2>Fetched Observations</h2>
+        <table border="1" id="csv-table">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <script type="application/javascript">
+            $(function() {
+                $('#csv-fetch').click(function() {
+                    let $table = $('#csv-table');
+                    let $status = $('#csv-status');
+
+                    let host = $('#csv-host').val();
+                    let user = $('#csv-user').val();
+                    let password = $('#csv-password').val();
+                    let pid = $('#csv-pid').val();
+                    let nid = $('#csv-nid').val();
+                    let sensor = $('#csv-sensor').val();
+                    let target = $('#csv-target').val();
+
+                    if (!host || !user || !password || !pid || !nid || !sensor || !target) {
+                        $status.html('Please fill out all input fields.');
+                        return;
+                    }
+
+                    let is_first = true;
+                    let url = host.concat('/api/v1/projects/', pid, '/nodes/', nid, '/sensors/', sensor,
+                                          '/targets/', target, '/observations/');
+
+                    $table.children('thead').empty();
+                    $table.children('tbody').empty();
+
+                    Papa.parse(url, {
+                        delimiter: ',',
+                        download: true,
+                        downloadRequestHeaders: {
+                            'Authorization': 'Basic ' + btoa(user + ':' + password),
+                            'Accept': 'text/csv'
+                        },
+                        step: function(row) {
+                            $status.html('Adding row …');
+
+                            /* Output table head. */
+                            if (is_first) {
+                                is_first = false;
+                                let head = '<tr>';
+                                head += `<th>Timestamp</th>
+                                         <th>Observation ID</th>
+                                         <th>Sensor Name</th>
+                                         <th>Target Name</th>`;
+
+                                for (let i = 6; i < row.data.length; i += 4) {
+                                    let value = row.data[i];
+                                    head += `<th>${value}</th>`;
+                                }
+
+                                head += '</tr>';
+                                $table.children('thead').append(head);
+                            }
+
+                            /* Output table body. */
+                            let timestamp = row.data[0];
+                            let oid = row.data[3];
+                            let body = '<tr>'
+
+                            body += `<td>${timestamp}</td>
+                                     <td><code>${oid}</code></td>
+                                     <td>${sensor}</td>
+                                     <td>${target}</td>`;
+
+                            for (let i = 6; i < row.data.length; i += 4) {
+                                let value = row.data[i + 3];
+                                let unit = row.data[i + 2];
+                                body += `<td>${value} ${unit}</td>`;
+                            }
+
+                            body += '</tr>';
+                            $table.children('tbody').append(body);
+
+                        },
+                        complete: function(results) {
+                            $status.html('Finished.');
+                        },
+                        error: function(err, file, element, reason) {
+                            $status.html(err);
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

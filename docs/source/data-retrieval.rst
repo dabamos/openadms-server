@@ -93,7 +93,7 @@ library:
     >> user = "<user>";
     >> password = "<password>";
     >> api = strcat("https://", user, ":", password, "@", host, "/api/v1/");
-    >> x = loadjson(urlread(api))
+    >> x = loadjson(urlread(api));
     >> x =
 
       scalar structure containing the fields:
