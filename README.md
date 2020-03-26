@@ -10,10 +10,9 @@ with command-line tools like [cURL](https://curl.haxx.se/) or
 (for instance, by using [jQuery](https://jquery.com/) or
 [Python Requests](http://docs.python-requests.org/en/master/)).
 
-The OpenADMS Server API is based on
-[nginx](https://nginx.org/)/[OpenResty](https://openresty.org/) and
-[PostgreSQL](https://www.postgresql.org/). The following nginx modules are
-required:
+The OpenADMS Server is based on [PostgreSQL](https://www.postgresql.org/) and
+[nginx](https://nginx.org/)/[OpenResty](https://openresty.org/). The
+following nginx modules are required:
 
 * [form-input](https://github.com/calio/form-input-nginx-module)
 * [headers-more](https://github.com/openresty/headers-more-nginx-module)
@@ -87,9 +86,9 @@ Enter it again:
 $ createdb --encoding UTF8 --owner <username> <database>
 ```
 
-You may want to create additional users who have read/write privileges to
-selected databases only. Create the SQL schema by executing the file
-`psql/timeseries.sql` from the OpenADMS Server repository with `psql`:
+You may want to create additional roles which have restricted privileges. Create
+the SQL schema by executing the file `psql/timeseries.sql` from the repository
+with `psql`:
 
 ```
 $ psql -h localhost -U <username> -d timeseries -a -f psql/timeseries.sql
@@ -100,8 +99,8 @@ as a front-end.
 
 ### nginx
 Install [nginx](https://nginx.org/) with all required 3rd party modules. On
-Linux, you probably want to use [OpenResty](https://openresty.org/) instead. On
-FreeBSD, the full package can be installed with:
+Linux, you probably prefer [OpenResty](https://openresty.org/). On FreeBSD, the
+full package can be installed with:
 
 ```
 # pkg install www/nginx-full www/lua-resty-core
@@ -109,7 +108,7 @@ FreeBSD, the full package can be installed with:
 
 Copy the file `nginx/nginx.conf` and directory `nginx/openadms-server` from the
 GitHub repository to `/usr/local/etc/nginx/` (FreeBSD) or `/etc/nginx/` (Linux)
-and alter the configuration to your set-up. You have to update at least the name
+and alter the configuration to your set-up. You have to set at least the name
 of the user the nginx process is running under, the connection details of your
 PostgreSQL database, and the actual server name:
 
@@ -144,29 +143,29 @@ The API uses HTTP BasicAuth for access restriction. Clients must send an
 authorisation header with encoded user name and password. Store login
 credentials in `.htpasswd` along your `nginx.conf`. If you use a different path,
 change `nginx.conf` accordingly. You can use `security/py-htpasswd` to generate
-a `.htpasswd` file, or simply run OpenSSL:
+the `.htpasswd` file, or simply run OpenSSL:
 
 ```
 $ printf "<username>:$(openssl passwd -crypt <password>)\n" >> .htpasswd
 ```
 
 ## API
-| Endpoint                                                                                                               | Method | Description                 |
-|------------------------------------------------------------------------------------------------------------------------|--------|-----------------------------|
-| `/api/v1/`                                                                                                             | `GET`  | Returns system info.        |
-| `/api/v1/heartbeats/`                                                                                                  | `POST` | Stores heartbeat.           |
-| `/api/v1/logs/`                                                                                                        | `POST` | Stores log message.         |
-| `/api/v1/logs/<id>/`                                                                                                   | `GET`  | Returns single log message. |
-| `/api/v1/observations/`                                                                                                | `POST` | Stores observation.         |
-| `/api/v1/observations/<id>/`                                                                                           | `GET`  | Returns observation.        |
-| `/api/v1/projects/`                                                                                                    | `GET`  | Returns project ids.        |
-| `/api/v1/projects/<pid>/nodes/`                                                                                        | `GET`  | Returns sensor node ids.    |
-| `/api/v1/projects/<pid>/nodes/<nid>/heartbeat/`                                                                        | `GET`  | Returns last heartbeat.     |
-| `/api/v1/projects/<pid>/nodes/<nid>/logs/?start=<timestamp>&end=<timestamp>`                                           | `GET`  | Returns log messages.       |
-| `/api/v1/projects/<pid>/nodes/<nid>/sensors/`                                                                          | `GET`  | Returns sensor names.       |
-| `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/`                                                         | `GET`  | Returns target names.       |
-| `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/<target>/ids/`                                            | `GET`  | Returns observation ids.    |
-| `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/<target>/observations/?start=<timestamp>&end=<timestamp>` | `GET`  | Returns observations.       |
+| Method | Endpoint                                                                                                               | Description                 |
+|--------|------------------------------------------------------------------------------------------------------------------------|-----------------------------|
+| `GET`  | `/api/v1/`                                                                                                             | Returns system info.        |
+| `POST` | `/api/v1/heartbeats/`                                                                                                  | Stores heartbeat.           |
+| `POST` | `/api/v1/logs/`                                                                                                        | Stores log message.         |
+| `GET`  | `/api/v1/logs/<id>/`                                                                                                   | Returns single log message. |
+| `POST` | `/api/v1/observations/`                                                                                                | Stores observation.         |
+| `GET`  | `/api/v1/observations/<id>/`                                                                                           | Returns observation.        |
+| `GET`  | `/api/v1/projects/`                                                                                                    | Returns project ids.        |
+| `GET`  | `/api/v1/projects/<pid>/nodes/`                                                                                        | Returns sensor node ids.    |
+| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/heartbeat/`                                                                        | Returns last heartbeat.     |
+| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/logs/?start=<timestamp>&end=<timestamp>`                                           | Returns log messages.       |
+| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/sensors/`                                                                          | Returns sensor names.       |
+| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/`                                                         | Returns target names.       |
+| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/<target>/ids/`                                            | Returns observation ids.    |
+| `GET`  | `/api/v1/projects/<pid>/nodes/<nid>/sensors/<sensor>/targets/<target>/observations/?start=<timestamp>&end=<timestamp>` | Returns observations.       |
 
 ## Build the Documentation
 You can then generate the documentation with

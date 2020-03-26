@@ -7,7 +7,7 @@
 -- PostgreSQL database schema, tables for observation data, log messages,
 -- and heartbeats, as well as PL/pgSQL functions.
 --
--- Date:    2020-03-24
+-- Date:    2020-03-26
 -- Author:  Philipp Engel
 
 BEGIN;
@@ -422,7 +422,7 @@ BEGIN
         WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
             AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name
             AND data->>'target' = target_name
-            AND (data->>'timestamp' BETWEEN dt_from AND dt_to)
+            AND data->>'timestamp' >= dt_from AND data->>'timestamp' < dt_to
         ORDER BY data->>'timestamp'
     ) t;
     RETURN result;
@@ -450,7 +450,7 @@ BEGIN
     WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
         AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name
         AND data->>'target' = target_name
-        AND (data->>'timestamp' BETWEEN dt_from AND dt_to)
+        AND data->>'timestamp' >= dt_from AND data->>'timestamp' < dt_to)
     ORDER BY data->>'timestamp';
 END;
 $$ LANGUAGE plpgsql;
