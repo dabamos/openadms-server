@@ -113,7 +113,7 @@ of the user the nginx process is running under, the connection details of your
 PostgreSQL database, and the actual server name:
 
 ```
-user www;   # User to run nginx process under (or `nobody`).
+user www;   # User to run nginx process under (or "nobody").
 
 http {
     # PostgreSQL connection details. Change "localhost" to the IP address of
@@ -139,7 +139,7 @@ Please see the
 [nginx manual](http://nginx.org/en/docs/http/configuring_https_servers.html)
 on how to configure HTTPS servers.
 
-The API uses HTTP BasicAuth for access restriction. Clients must send an
+The API uses HTTP Basic Auth for access restriction. Clients must send an
 authorisation header with encoded user name and password. Store login
 credentials in `.htpasswd` along your `nginx.conf`. If you use a different path,
 change `nginx.conf` accordingly. You can use `security/py-htpasswd` to generate
