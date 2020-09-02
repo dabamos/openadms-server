@@ -3,8 +3,8 @@
 nginx
 =====
 
-The HTTP front-end runs on `nginx`_. Either install nginx or `OpenResty`_ with
-the following additional modules:
+The HTTP front-end runs on `nginx <https://nginx.org/>`_. Either install nginx
+or `OpenResty <https://openresty.org/>`_ with the following additional modules:
 
 * `form-input`_,
 * `headers-more`_,
@@ -13,6 +13,8 @@ the following additional modules:
 * `postgres`_,
 * `set-misc`_.
 
+Installation on FreeBSD
+-----------------------
 On FreeBSD, the full package can be installed with:
 
 .. code-block:: console
@@ -20,8 +22,71 @@ On FreeBSD, the full package can be installed with:
    # pkg install www/nginx-full www/lua-resty-core
 
 If you use a custom nginx package or build from source, make sure that all
-required modules are included.
+required modules are included. Build the port with:
 
+.. code-block:: console
+
+    # cd /usr/local/ports/www/nginx/
+    # make config
+
+Select at least the following modules:
+
+* ``HTTP_REALIP``
+* ``FORMINPUT``
+* ``HEADERS_MORE``
+* ``LUA``
+* ``POSTGRES``
+* ``SET_MISC``
+
+Then, build the port:
+
+.. code-block:: console
+
+    # make
+    # make install
+
+Installation on Linux
+---------------------
+On Linux, you probably prefer OpenResty. Binary packages are available for most
+distributions, but do not inluce the requires PostgreSQL module. Therefore,
+OpenResty has to be build from source.
+
+At first, install all dependencies. On Debian:
+
+.. code-block:: console
+
+    $ sudo apt-get install libpcre3-dev libssl-dev perl make build-essential curl postgresql-contrib
+
+On CentOS/RHEL, run instead:
+
+.. code-block:: console
+
+    $ sudo dnf install pcre-devel openssl-devel gcc curl postgres-devel
+
+Then, download, unpack, and compile
+`OpenResty <https://openresty.org/en/download.html>`_:
+
+.. code-block:: console
+
+    $ wget https://openresty.org/download/openresty-VERSION.tar.gz
+    $ tar xfvz openresty-VERSION.tar.gz
+    $ cd openresty-VERSION/
+    $ ./configure --prefix=/usr/local/openresty \
+                  --with-luajit \
+                  --with-pcre-jit \
+                  --with-ipv6 \
+                  --with-http_iconv_module \
+                  --with-http_realip_module \
+                  --with-http_postgres_module \
+                  --j2
+    $ sudo make -j2
+    $ sudo make install
+
+OpenResty is installed to ``/usr/local/openresty/``, but you can choose any
+other path (for instance, ``/opt/openresty/``).
+
+Configuration
+-------------
 Copy the file ``nginx.conf`` and directory ``openadms-server`` from the GitHub
 repository to ``/usr/local/etc/nginx/`` (FreeBSD) or ``/etc/nginx/`` (Linux) and
 alter the configuration to your set-up. You have to update at least the name of
@@ -62,8 +127,6 @@ change ``openadms-server/api.conf`` accordingly. You can use
 
     $ printf "<username>:$(openssl passwd -crypt <password>)\n" >> .htpasswd
 
-.. _nginx: https://nginx.org/
-.. _OpenResty: https://openresty.org/
 .. _form-input: https://github.com/calio/form-input-nginx-module
 .. _headers-more: https://github.com/openresty/headers-more-nginx-module
 .. _http-realip: http://nginx.org/en/docs/http/ngx_http_realip_module.html

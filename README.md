@@ -102,13 +102,13 @@ Either install [nginx](https://nginx.org/) or
 [OpenResty](https://openresty.org/) with all required 3rd party modules.
 
 #### Installation on FreeBSD
-You can install the full package with:
+You can install nginx with most modules already included:
 
 ```
 # pkg install www/nginx-full www/lua-resty-core
 ```
 
-Or, build nginx from ports:
+Or, instead, build nginx from ports:
 
 ```
 # cd /usr/local/ports/www/nginx/
@@ -117,12 +117,12 @@ Or, build nginx from ports:
 
 Select at least the following modules:
 
-  * `HTTP_REALIP`,
-  * `FORMINPUT`,
-  * `HEADERS_MORE`,
-  * `LUA`,
-  * `POSTGRES`,
-  * `SET_MISC`.
+  * `HTTP_REALIP`
+  * `FORMINPUT`
+  * `HEADERS_MORE`
+  * `LUA`
+  * `POSTGRES`
+  * `SET_MISC`
 
 Then, build the port:
 
@@ -162,12 +162,12 @@ $ ./configure --prefix=/usr/local/openresty \
               --with-http_iconv_module \
               --with-http_realip_module \
               --with-http_postgres_module \
-              -j2
+              --j2
 $ sudo make -j2
 $ sudo make install
 ```
 
-OpenResty is installed to `/usr/local/openresty`, but you can choose any other
+OpenResty is installed to `/usr/local/openresty/`, but you can choose any other
 path (for instance, `/opt/openresty/`). For more information, see
 [this tutorial for Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-use-the-openresty-web-framework-for-nginx-on-ubuntu-16-04).
 
