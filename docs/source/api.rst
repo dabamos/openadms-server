@@ -1,8 +1,15 @@
+.. _api:
+
 API
 ===
 
 PostgreSQL & nginx
 ------------------
+
+Server
+^^^^^^
+
+* :doc:`Return server status <server-status>`
 
 Observation Data
 ^^^^^^^^^^^^^^^^

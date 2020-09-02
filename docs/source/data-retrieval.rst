@@ -1,15 +1,17 @@
+.. _data-retrieval:
+
 Data Retrieval
 ==============
 
-Using the REST API of OpenADMS Server, timeseries and other data can be accessed
-by many 3rd party applications and programming languages.
+Using the REST API of OpenADMS Server, observations, log messages, and
+heartbeats can be accessed by many programming languages and 3rd party
+applications.
 
 cURL
 ----
 
-`cURL`_ can be used to retrieve stored data, like observations, log messages,
-and heartbeats, from an OpenADMS Server instance. You may want to format the
-JSON output with `jq`_.
+`cURL`_ can be used to retrieve and send data from or to an OpenADMS Server
+instance. You may want to format the JSON output with `jq`_.
 
 Return a single observation with ID ``00ce160e5cbb49b9bc2ee6f243f87841`` in JSON
 format:
@@ -83,7 +85,7 @@ GNU Octave
 ----------
 
 The `URL manipulation tools`_ of `GNU Octave`_ can directly download resources
-from OpenADMS Server into the current workspace. The example uses the `jsonlab`_
+from OpenADMS Server into the current workspace. The example uses the `JSONLab`_
 library:
 
 .. code-block:: matlab
@@ -110,7 +112,7 @@ JavaScript
 ----------
 
 Also, web applications written in JavaScript can access the OpenADMS Server API
-as well. The example in ``examples/clients/js`` uses `jQuery`_ and `Papa Parse`_
+as well. The example in ``examples/clients/js/`` uses `jQuery`_ and `Papa Parse`_
 to retrieve observations in CSV format and list them in a table.  Simply open
 ``index.html`` in a web browser. jQuery and Papa Parse are are fetched from CDN.
 
@@ -120,7 +122,7 @@ to retrieve observations in CSV format and list them in a table.  Simply open
 .. _Requests: https://requests.readthedocs.io/en/master/
 .. _URL manipulation tools: https://octave.org/doc/v4.0.1/URL-Manipulation.html
 .. _GNU Octave: https://octave.org/
-.. _jsonlab: https://github.com/fangq/jsonlab
+.. _JSONLab: https://github.com/fangq/jsonlab
 .. _MATLAB: https://www.mathworks.com/help/matlab/ref/webread.html
 .. _jQuery: https://jquery.com/
 .. _Papa Parse: https://www.papaparse.com/

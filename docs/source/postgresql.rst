@@ -1,4 +1,5 @@
 .. _postgresql:
+
 PostgreSQL
 ==========
 
@@ -58,7 +59,7 @@ Start the PostgreSQL server:
     # service postgresql start
 
 Set a new password for user ``postgres``. After login, create a new database
-user (e.g., ``openadms``) and a new database (e.g., ``timeseries``):
+user (e.g., ``openadms``) and a new database (e.g., ``openadms``):
 
 .. code-block:: console
 
@@ -67,33 +68,34 @@ user (e.g., ``openadms``) and a new database (e.g., ``timeseries``):
     $ createuser --no-superuser --createdb --no-createrole --pwprompt <username>
     Enter password for new role:
     Enter it again:
-    $ createdb --encoding UTF8 --owner <username> timeseries
+    $ createdb --encoding UTF8 --owner <username> openadms
 
 You may want to create additional users who have read/write privileges to
-selected databases only. Open a connection to the database ``timeseries`` with
+selected databases only. Open a connection to the database ``openadms`` with
+    q psql -h localhost -U <username> -d openadms -a -f psql/openadms.sql
 ``psql``:
 
 .. code-block:: console
 
-    $ psql -h localhost -U <username> -d timeseries
-    timeseries=> \l
-    timeseries=> \q
+    $ psql -h localhost -U <username> -d openadms
+    openadms=> \l
+    openadms=> \q
 
-Create the SQL tables by executing ``timeseries.sql`` from the OpenADMS Server
+Create the SQL tables by executing ``openadms.sql`` from the OpenADMS Server
 repository with ``psql``:
 
 .. code-block:: console
 
-    $ psql -h localhost -U <username> -d timeseries -a -f psql/timeseries.sql
+    $ psql -h localhost -U <username> -d openadms -a -f psql/openadms.sql
 
 The tables ``observations``, ``logs``, and ``heartbeats`` should be in database
-``timeseries`` now.
+``openadms`` now.
 
 .. code-block:: console
 
-    $ psql -h localhost -U <username> -server -d timeseries
-    timeseries=> \l
-    timeseries=> \dt+ openadms.*
+    $ psql -h localhost -U <username> -server -d openadms
+    openadms=> \l
+    openadms=> \dt+ openadms.*
                                   List of relations
       Schema  |     Name     | Type  |      Owner      |    Size    | Description
     ----------+--------------+-------+-----------------+------------+-------------
@@ -101,7 +103,7 @@ The tables ``observations``, ``logs``, and ``heartbeats`` should be in database
      openadms | observations | table | <username>      | 8192 bytes |
      openadms | logs         | table | <username>      | 0 bytes    |
     (3 rows)
-    timeseries=> \q
+    openadms=> \q
 
 The PostgreSQL database is now ready to store time series data. Use nginx as a
 REST front-end.
@@ -112,7 +114,7 @@ Use ``pg_dump`` to create database dumps:
 
 .. code-block:: console
 
-    # pg_dump timeseries --username=<username> | gzip > /var/backups/`date +"%Y%m%d%H%M%S"`_timeseries.sql.gz
+    # pg_dump openadms --username=<username> | gzip > /var/backups/`date +"%Y%m%d%H%M%S"`_openadms.sql.gz
 
 Automate backups with cron. Create a shell script ``pg_backup.sh`` with the
 above command and make it executable with

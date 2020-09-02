@@ -1,7 +1,7 @@
-# OpenADMS Server API JavaScript Test
+# OpenADMS Server API Access from JavaScript
 
 Basic example that uses [jQuery](https://www.jquery.com/) and
 [Papa Parse](https://www.papaparse.com/) to query observations from an OpenADMS
-Server instance, then displays the fetched data inside a table.
+Server instance, then displays the fetched CSV data inside a table.
 
-Open file `index.html` in a web browser.
+Simply open `index.html` in a web browser.

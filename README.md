@@ -3,9 +3,9 @@
 **OpenADMS Server** is a set of scripts and configuration files to run an HTTP
 service for time series data, obtained from IoT sensor networks based on
 [OpenADMS Node](https://github.com/dabamos/openadms-node/) or 3rd party
-applications. A REST interface API is provided for storage and retrieval of
-sensor data, log messages, and heartbeats. Access the API from your web browser,
-with command-line tools like [cURL](https://curl.haxx.se/) or
+applications. A REST API is provided for storage and retrieval of sensor data,
+log messages, and heartbeats. Access the API from your web browser, with
+command-line tools like [cURL](https://curl.haxx.se/) or
 [HTTPie](https://httpie.org/), or directly from within your programming language
 (for instance, by using [jQuery](https://jquery.com/) or
 [Python Requests](http://docs.python-requests.org/en/master/)).
@@ -91,21 +91,87 @@ the SQL schema by executing the file `psql/timeseries.sql` from the repository
 with `psql`:
 
 ```
-$ psql -h localhost -U <username> -d timeseries -a -f psql/timeseries.sql
+$ psql -h localhost -U <username> -d <database> -a -f psql/timeseries.sql
 ```
 
 The PostgreSQL database is now ready to store time series data. Configure nginx
 as a front-end.
 
 ### nginx
-Install [nginx](https://nginx.org/) with all required 3rd party modules. On
-Linux, you probably prefer [OpenResty](https://openresty.org/). On FreeBSD, the
-full package can be installed with:
+Either install [nginx](https://nginx.org/) or
+[OpenResty](https://openresty.org/) with all required 3rd party modules.
+
+#### Installation on FreeBSD
+You can install the full package with:
 
 ```
 # pkg install www/nginx-full www/lua-resty-core
 ```
 
+Or, build nginx from ports:
+
+```
+# cd /usr/local/ports/www/nginx/
+# make config
+```
+
+Select at least the following modules:
+
+  * `HTTP_REALIP`,
+  * `FORMINPUT`,
+  * `HEADERS_MORE`,
+  * `LUA`,
+  * `POSTGRES`,
+  * `SET_MISC`.
+
+Then, build the port:
+
+```
+# make
+# make install
+```
+
+#### Installation on Linux
+On Linux, you probably prefer OpenResty. Binary packages are available for most
+distributions, but do not inluce the requires PostgreSQL module. Therefore,
+OpenResty has to be build from source.
+
+At first, install all dependencies. On Debian:
+
+```
+$ sudo apt-get install libpcre3-dev libssl-dev perl make build-essential curl postgresql-contrib
+```
+
+On CentOS/RHEL, run instead:
+
+```
+$ sudo dnf install pcre-devel openssl-devel gcc curl postgres-devel
+```
+
+Then, download, unpack, and compile
+[OpenResty](https://openresty.org/en/download.html):
+
+```
+$ wget https://openresty.org/download/openresty-VERSION.tar.gz
+$ tar xfvz openresty-VERSION.tar.gz
+$ cd openresty-VERSION/
+$ ./configure --prefix=/usr/local/openresty \
+              --with-luajit \
+              --with-pcre-jit \
+              --with-ipv6 \
+              --with-http_iconv_module \
+              --with-http_realip_module \
+              --with-http_postgres_module \
+              -j2
+$ sudo make -j2
+$ sudo make install
+```
+
+OpenResty is installed to `/usr/local/openresty`, but you can choose any other
+path (for instance, `/opt/openresty/`). For more information, see
+[this tutorial for Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-use-the-openresty-web-framework-for-nginx-on-ubuntu-16-04).
+
+### Configuration
 Copy the file `nginx/nginx.conf` and directory `nginx/openadms-server` from the
 GitHub repository to `/usr/local/etc/nginx/` (FreeBSD) or `/etc/nginx/` (Linux)
 and alter the configuration to your set-up. You have to set at least the name

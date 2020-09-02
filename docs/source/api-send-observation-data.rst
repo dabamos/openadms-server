@@ -6,7 +6,7 @@ Stores a JSON-formatted observation data object in the database. Multiple
 observations can be sent as a JSON array. Maximum size of the request body is
 100 KiB. The request header must contain ``Content-Type: application/json``
 (``application/x-www-form-urlencoded`` will be rejected). The server returns
-201 Created on success
+200 OK on success
 
 URL
 ---
@@ -26,7 +26,7 @@ Success Response
 ----------------
   * **Request:** ``POST``
   * **Request Fields:** ``Accept: application/json``
-  * **Code:** 201 Created
+  * **Code:** 200 OK
   * **Content:** –
 
 Error Response
