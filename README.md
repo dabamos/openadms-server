@@ -87,11 +87,11 @@ $ createdb --encoding UTF8 --owner <username> <database>
 ```
 
 You may want to create additional roles which have restricted privileges. Create
-the SQL schema by executing the file `psql/timeseries.sql` from the repository
+the SQL schema by executing the file `psql/openadms.sql` from the repository
 with `psql`:
 
 ```
-$ psql -h localhost -U <username> -d <database> -a -f psql/timeseries.sql
+$ psql -h localhost -U <username> -d <database> -a -f psql/openadms.sql
 ```
 
 The PostgreSQL database is now ready to store time series data. Configure nginx
