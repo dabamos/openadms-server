@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'OpenADMS Server'
-copyright = '2020, Hochschule Neubrandenburg – University of Applied Sciences'
+copyright = '2021, Hochschule Neubrandenburg – University of Applied Sciences'
 author = 'Hochschule Neubrandenburg – University of Applied Sciences'
 
 # The short X.Y version

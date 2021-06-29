@@ -72,7 +72,6 @@ user (e.g., ``openadms``) and a new database (e.g., ``openadms``):
 
 You may want to create additional users who have read/write privileges to
 selected databases only. Open a connection to the database ``openadms`` with
-    q psql -h localhost -U <username> -d openadms -a -f psql/openadms.sql
 ``psql``:
 
 .. code-block:: console

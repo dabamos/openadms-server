@@ -10,9 +10,9 @@
 -- Date:    2020-03-31
 -- Author:  Philipp Engel
 
-BEGIN;
-
 SET CLIENT_ENCODING = 'UTF8';
+
+BEGIN;
 
 -- DROP SCHEMA IF EXISTS openadms CASCADE;
 CREATE SCHEMA IF NOT EXISTS openadms;
@@ -22,9 +22,6 @@ CREATE TABLE IF NOT EXISTS openadms.observations (
     id   BIGSERIAL PRIMARY KEY,
     data JSONB     NOT NULL
 );
-
-COMMENT ON TABLE openadms.observations.id   IS 'The primary key of the observation.';
-COMMENT ON TABLE openadms.observations.data IS 'The JSONB object containing the observation data.';
 
 -- Create the heartbeats table for sensor node pings.
 CREATE TABLE IF NOT EXISTS openadms.heartbeats (
@@ -36,12 +33,6 @@ CREATE TABLE IF NOT EXISTS openadms.heartbeats (
     UNIQUE (pid, nid)
 );
 
-COMMENT ON TABLE openadms.heartbeats.pid  IS 'The project id.';
-COMMENT ON TABLE openadms.heartbeats.nid  IS 'The sensor node id.';
-COMMENT ON TABLE openadms.heartbeats.freq IS 'The set heartbeat frequency.';
-COMMENT ON TABLE openadms.heartbeats.ip   IS 'The IP address of the sender.';
-COMMENT ON TABLE openadms.heartbeats.dt   IS 'The timetamp with timezone.';
-
 -- Create the log messages table.
 CREATE TABLE IF NOT EXISTS openadms.logs (
     id      BIGSERIAL PRIMARY KEY,
@@ -52,14 +43,6 @@ CREATE TABLE IF NOT EXISTS openadms.logs (
     level   VARCHAR(8)   NOT NULL,
     message VARCHAR(500) NOT NULL
 );
-
-COMMENT ON TABLE openadms.logs.id      IS 'The primary key of the log message.';
-COMMENT ON TABLE openadms.logs.pid     IS 'The project id.';
-COMMENT ON TABLE openadms.logs.nid     IS 'The sensor node id.';
-COMMENT ON TABLE openadms.logs.dt      IS 'The timetamp with timezone.';
-COMMENT ON TABLE openadms.logs.module  IS 'The name of the OpenADMS Node module that created the log messages.';
-COMMENT ON TABLE openadms.logs.level   IS 'The log level.';
-COMMENT ON TABLE openadms.logs.message IS 'The log message.';
 
 -- Create additional indices for table `openadms.observations`.
 CREATE INDEX IF NOT EXISTS idx_obs_id        ON openadms.observations ((data->>'id'));
@@ -470,7 +453,7 @@ BEGIN
         ) AS csv
     ) AS csv
     FROM openadms.observations
-    WHERE data->>'type' = 'observation' AND data->>'pid' = project_id
+    WHERE (data->>'type' = 'observation' AND data->>'pid' = project_id
         AND data->>'nid' = node_id AND data->>'sensorName' = sensor_name
         AND data->>'target' = target_name
         AND data->>'timestamp' >= dt_from AND data->>'timestamp' < dt_to)

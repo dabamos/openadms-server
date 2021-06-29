@@ -241,17 +241,14 @@ You can then generate the documentation with
 $ python3 -m venv virtual-environment
 $ source virtual-environment/bin/activate
 $ pip3 install sphinx sphinx_rtd_theme
-$ deactivate
 ```
 
 Make the documentation with:
 
 ```
-$ source virtual-environment/bin/activate
 $ cd docs/
 $ gmake clean
 $ gmake html
-$ deactivate
 ```
 
 If you are using PyPy3, run:

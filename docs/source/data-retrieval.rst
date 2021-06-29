@@ -36,14 +36,14 @@ output to ``jq``:
 ::
 
     $ curl -X GET -u <user>:<password> \
-      -H "Accept: application/json"
+      -H "Accept: application/json" \
       -G https://api.example.com/api/v1/projects/<pid>/nodes/<nid>/logs/?start=2020-01-01T00:00:00&end=2020-06-01T00:00:00 | jq
 
 HTTPie
 ------
 
 `HTTPie`_ is a more convenient command-line tool for JSON output of API results.
-For example, to return all observations of a given time period, run:
+For example, to return all log messages of a given time period, run:
 
 ::
 
