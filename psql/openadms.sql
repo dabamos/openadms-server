@@ -7,7 +7,7 @@
 -- PostgreSQL database schema, tables for observation data, log messages,
 -- and heartbeats, as well as PL/pgSQL functions.
 --
--- Date:    2020-03-31
+-- Date:    2021-06-29
 -- Author:  Philipp Engel
 
 SET CLIENT_ENCODING = 'UTF8';
@@ -449,6 +449,7 @@ BEGIN
             FROM (
                 SELECT key, (jsonb_each_text(value)).value
                 FROM jsonb_each(data->'responseSets')
+                ORDER BY key
             ) AS x GROUP BY key
         ) AS csv
     ) AS csv
